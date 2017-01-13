@@ -86,7 +86,7 @@ public class WillTopicUpdTests
 	}
 
 	@Test
-	public void testEncodeDeode()
+	public void testEncodeDecode()
 	{
 		try
 		{

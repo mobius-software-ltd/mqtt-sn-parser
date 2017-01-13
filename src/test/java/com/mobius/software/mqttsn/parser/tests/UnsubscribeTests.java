@@ -24,7 +24,7 @@ import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 public class UnsubscribeTests
 {
 	private static final int MESSAGE_ID = 22;
-	private static final Topic TOPIC = new PredefinedTopic(33, QoS.EXACTLY_ONCE);
+	private static final Topic TOPIC = new PredefinedTopic(33, QoS.AT_MOST_ONCE);
 	private static Unsubscribe message;
 
 	@Before
@@ -63,7 +63,7 @@ public class UnsubscribeTests
 	}
 
 	@Test
-	public void testEncodeDeode()
+	public void testEncodeDecode()
 	{
 		try
 		{

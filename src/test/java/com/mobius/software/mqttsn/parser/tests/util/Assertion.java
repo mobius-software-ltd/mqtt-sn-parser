@@ -119,7 +119,7 @@ public class Assertion
 
 	private static boolean assertConstants(SNMessage expected, SNMessage actual)
 	{
-		boolean doContinue;
+		boolean doContinue = true;
 		if (expected == null)
 		{
 			assertNull(actual);
@@ -130,7 +130,6 @@ public class Assertion
 			assertNotNull(actual);
 			assertEquals(expected.getType(), actual.getType());
 			assertEquals(expected.getLength(), actual.getLength());
-			doContinue = true;
 		}
 		return doContinue;
 	}

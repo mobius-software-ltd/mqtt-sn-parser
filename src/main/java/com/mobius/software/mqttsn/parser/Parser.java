@@ -313,12 +313,13 @@ public class Parser
 				boolean willTopicUpdateRetain = false;
 				if (bytesLeft > 0)
 				{
-					Flags wilTopicUpdFlags = Flags.decode(buf.readByte(), type);
+					Flags willTopicUpdFlags = Flags.decode(buf.readByte(), type);
+					willTopicUpdateRetain = willTopicUpdFlags.isRetain();
 					bytesLeft--;
 					byte[] willTopicUpdTopicBytes = new byte[bytesLeft];
 					buf.readBytes(willTopicUpdTopicBytes);
 					String willTopicUpdTopicValue = new String(willTopicUpdTopicBytes, ENCODING);
-					willTopicUpdTopic = new NamedTopic(willTopicUpdTopicValue, wilTopicUpdFlags.getQos());
+					willTopicUpdTopic = new NamedTopic(willTopicUpdTopicValue, willTopicUpdFlags.getQos());
 				}
 				message = new WillTopicUpd(willTopicUpdateRetain, willTopicUpdTopic);
 				break;
@@ -342,7 +343,6 @@ public class Parser
 				break;
 
 			case ENCAPSULATED:
-
 				Controls control = Controls.decode(buf.readByte());
 				bytesLeft--;
 				byte[] wirelessNodeIDBytes = new byte[bytesLeft];

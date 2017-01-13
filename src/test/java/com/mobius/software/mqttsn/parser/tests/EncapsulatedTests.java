@@ -68,7 +68,7 @@ public class EncapsulatedTests
 	}
 
 	@Test
-	public void testEncodeDeode()
+	public void testEncodeDecode()
 	{
 		try
 		{

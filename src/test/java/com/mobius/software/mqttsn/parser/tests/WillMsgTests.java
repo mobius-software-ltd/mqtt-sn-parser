@@ -72,15 +72,17 @@ public class WillMsgTests
 	}
 
 	@Test
-	public void testEncodeDeode()
+	public void testEncodeDecode()
 	{
 		try
 		{
-			WillMsg willMsg = new WillMsg(loadContent());
+			ByteBuf originalContent = Unpooled.copiedBuffer(message.getContent());
+			WillMsg willMsg = new WillMsg(Unpooled.copiedBuffer(originalContent));
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(willMsg);
 			assertTrue(ByteBufUtil.equals(expected, actual));
 			willMsg = (WillMsg) Parser.decode(actual);
+			message.setContent(Unpooled.copiedBuffer(originalContent));
 			Assertion.assertWillMsg(message, willMsg);
 		}
 		catch (Exception e)
