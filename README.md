@@ -44,3 +44,4 @@ Now you are able to start using MQTT-SN parser.
 		}
 
 ```
+## [License](LICENSE.md)
