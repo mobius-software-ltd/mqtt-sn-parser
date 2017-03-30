@@ -11,7 +11,7 @@ import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.ReturnCode;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Connack;
+import com.mobius.software.mqttsn.parser.packet.impl.SNConnack;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 import io.netty.buffer.ByteBuf;
@@ -21,12 +21,12 @@ import io.netty.buffer.Unpooled;
 public class ConnackTests
 {
 	private static final ReturnCode code = ReturnCode.ACCEPTED;
-	private static Connack message;
+	private static SNConnack message;
 
 	@BeforeClass
 	public static void beforeClass()
 	{
-		message = new Connack(code);
+		message = new SNConnack(code);
 	}
 
 	@Test
@@ -63,11 +63,11 @@ public class ConnackTests
 	{
 		try
 		{
-			Connack connack = new Connack(code);
+			SNConnack connack = new SNConnack(code);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(connack);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			connack = (Connack) Parser.decode(actual);
+			connack = (SNConnack) Parser.decode(actual);
 			Assertion.assertConnack(message, connack);
 		}
 		catch (Exception e)

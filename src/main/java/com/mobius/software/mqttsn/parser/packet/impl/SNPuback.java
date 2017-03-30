@@ -1,48 +1,44 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
-import com.mobius.software.mqttsn.parser.avps.QoS;
 import com.mobius.software.mqttsn.parser.avps.ReturnCode;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.CountableMessage;
 
-public class Suback extends CountableMessage
+public class SNPuback extends CountableMessage
 {
 	private int topicID;
 	private ReturnCode code;
-	private QoS allowedQos;
 
-	public Suback()
+	public SNPuback()
 	{
 		super();
 	}
 
-	public Suback(int topicID, int messageID, ReturnCode code, QoS allowedQos)
+	public SNPuback(int topicID, int messageID, ReturnCode code)
 	{
 		super(messageID);
 		this.topicID = topicID;
 		this.code = code;
-		this.allowedQos = allowedQos;
 	}
 
-	public Suback reInit(int topicID, int messageID, ReturnCode code, QoS allowedQos)
+	public SNPuback reInit(int topicID, int messageID, ReturnCode code)
 	{
-		setMessageID(messageID);
 		this.topicID = topicID;
+		setMessageID(messageID);
 		this.code = code;
-		this.allowedQos = allowedQos;
 		return this;
 	}
 
 	@Override
 	public int getLength()
 	{
-		return 8;
+		return 7;
 	}
 
 	@Override
 	public SNType getType()
 	{
-		return SNType.SUBACK;
+		return SNType.PUBACK;
 	}
 
 	public int getTopicID()
@@ -63,15 +59,5 @@ public class Suback extends CountableMessage
 	public void setCode(ReturnCode code)
 	{
 		this.code = code;
-	}
-
-	public QoS getAllowedQos()
-	{
-		return allowedQos;
-	}
-
-	public void setAllowedQos(QoS allowedQos)
-	{
-		this.allowedQos = allowedQos;
 	}
 }

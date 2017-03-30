@@ -1,22 +1,22 @@
 package com.mobius.software.mqttsn.parser.avps;
 
-public class NamedTopic implements Topic
+public class FullTopic implements SNTopic
 {
 	private String value;
-	private QoS qos;
+	private SNQoS qos;
 
-	public NamedTopic()
+	public FullTopic()
 	{
 		super();
 	}
 
-	public NamedTopic(String value, QoS qos)
+	public FullTopic(String value, SNQoS qos)
 	{
 		this.value = value;
 		this.qos = qos;
 	}
 
-	public NamedTopic reInit(String value, QoS qos)
+	public FullTopic reInit(String value, SNQoS qos)
 	{
 		this.value = value;
 		this.qos = qos;
@@ -54,7 +54,7 @@ public class NamedTopic implements Topic
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		NamedTopic other = (NamedTopic) obj;
+		FullTopic other = (FullTopic) obj;
 		if (qos != other.qos)
 			return false;
 		if (value == null)
@@ -83,12 +83,12 @@ public class NamedTopic implements Topic
 		this.value = value;
 	}
 
-	public QoS getQos()
+	public SNQoS getQos()
 	{
 		return qos;
 	}
 
-	public void setQos(QoS qos)
+	public void setQos(SNQoS qos)
 	{
 		this.qos = qos;
 	}

@@ -13,18 +13,18 @@ import org.junit.Test;
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Disconnect;
+import com.mobius.software.mqttsn.parser.packet.impl.SNDisconnect;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class DisconnectTests
 {
 	private static final int DURATION = 10;
-	private static Disconnect message;
+	private static SNDisconnect message;
 
 	@BeforeClass
 	public static void beforeClass()
 	{
-		message = new Disconnect(DURATION);
+		message = new SNDisconnect(DURATION);
 	}
 
 	@Test
@@ -61,11 +61,11 @@ public class DisconnectTests
 	{
 		try
 		{
-			Disconnect disconnect = new Disconnect(DURATION);
+			SNDisconnect disconnect = new SNDisconnect(DURATION);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(disconnect);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			disconnect = (Disconnect) Parser.decode(actual);
+			disconnect = (SNDisconnect) Parser.decode(actual);
 			Assertion.assertDisconnect(message, disconnect);
 		}
 		catch (Exception e)

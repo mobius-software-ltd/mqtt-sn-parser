@@ -3,19 +3,19 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.CountableMessage;
 
-public class Pubrec extends CountableMessage
+public class SNUnsuback extends CountableMessage
 {
-	public Pubrec()
+	public SNUnsuback()
 	{
 		super();
 	}
 
-	public Pubrec(int messageID)
+	public SNUnsuback(int messageID)
 	{
 		super(messageID);
 	}
 
-	public Pubrec reInit(int messageID)
+	public SNUnsuback reInit(int messageID)
 	{
 		setMessageID(messageID);
 		return this;
@@ -24,6 +24,6 @@ public class Pubrec extends CountableMessage
 	@Override
 	public SNType getType()
 	{
-		return SNType.PUBREC;
+		return SNType.UNSUBACK;
 	}
 }

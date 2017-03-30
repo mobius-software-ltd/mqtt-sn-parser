@@ -1,22 +1,22 @@
 package com.mobius.software.mqttsn.parser.avps;
 
-public class ShortTopic implements Topic
+public class ShortTopic implements SNTopic
 {
 	private String value;
-	private QoS qos;
+	private SNQoS qos;
 
 	public ShortTopic()
 	{
 		super();
 	}
 
-	public ShortTopic(String value, QoS qos)
+	public ShortTopic(String value, SNQoS qos)
 	{
 		this.value = value;
 		this.qos = qos;
 	}
 
-	public ShortTopic reInit(String value, QoS qos)
+	public ShortTopic reInit(String value, SNQoS qos)
 	{
 		this.value = value;
 		this.qos = qos;
@@ -83,12 +83,12 @@ public class ShortTopic implements Topic
 		this.value = value;
 	}
 
-	public QoS getQos()
+	public SNQoS getQos()
 	{
 		return qos;
 	}
 
-	public void setQos(QoS qos)
+	public void setQos(SNQoS qos)
 	{
 		this.qos = qos;
 	}

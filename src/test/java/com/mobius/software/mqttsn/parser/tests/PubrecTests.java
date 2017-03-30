@@ -13,18 +13,18 @@ import org.junit.Test;
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Pubrec;
+import com.mobius.software.mqttsn.parser.packet.impl.SNPubrec;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class PubrecTests
 {
 	private static final int MESSAGE_ID = 22;
-	private static Pubrec message;
+	private static SNPubrec message;
 
 	@BeforeClass
 	public static void beforeClass()
 	{
-		message = new Pubrec(MESSAGE_ID);
+		message = new SNPubrec(MESSAGE_ID);
 	}
 
 	@Test
@@ -61,11 +61,11 @@ public class PubrecTests
 	{
 		try
 		{
-			Pubrec Pubrec = new Pubrec(MESSAGE_ID);
+			SNPubrec Pubrec = new SNPubrec(MESSAGE_ID);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(Pubrec);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			Pubrec = (Pubrec) Parser.decode(actual);
+			Pubrec = (SNPubrec) Parser.decode(actual);
 			Assertion.assertPubrec(message, Pubrec);
 		}
 		catch (Exception e)
@@ -98,7 +98,7 @@ public class PubrecTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidMessageID()
 	{
-		Pubrec pubrec = new Pubrec(0);
+		SNPubrec pubrec = new SNPubrec(0);
 		ByteBuf buf = Parser.encode(pubrec);
 		Parser.decode(buf);
 	}

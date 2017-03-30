@@ -3,21 +3,21 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class Disconnect implements SNMessage
+public class SNDisconnect implements SNMessage
 {
 	private int duration;
 
-	public Disconnect()
+	public SNDisconnect()
 	{
 
 	}
 
-	public Disconnect(int duration)
+	public SNDisconnect(int duration)
 	{
 		this.duration = duration;
 	}
 
-	public Disconnect reInit(Integer duration)
+	public SNDisconnect reInit(Integer duration)
 	{
 		this.duration = duration;
 		return this;

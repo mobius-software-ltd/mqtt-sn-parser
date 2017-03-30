@@ -3,21 +3,21 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class Pingreq implements SNMessage
+public class SNPingreq implements SNMessage
 {
 	private String clientID;
 
-	public Pingreq()
+	public SNPingreq()
 	{
 		super();
 	}
 
-	public Pingreq(String clientID)
+	public SNPingreq(String clientID)
 	{
 		this.clientID = clientID;
 	}
 
-	public Pingreq reInit(String clientID)
+	public SNPingreq reInit(String clientID)
 	{
 		this.clientID = clientID;
 		return this;

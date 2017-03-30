@@ -12,26 +12,26 @@ import org.junit.Test;
 
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.Flag;
-import com.mobius.software.mqttsn.parser.avps.NamedTopic;
-import com.mobius.software.mqttsn.parser.avps.PredefinedTopic;
-import com.mobius.software.mqttsn.parser.avps.QoS;
+import com.mobius.software.mqttsn.parser.avps.FullTopic;
+import com.mobius.software.mqttsn.parser.avps.IdentifierTopic;
+import com.mobius.software.mqttsn.parser.avps.SNQoS;
 import com.mobius.software.mqttsn.parser.avps.SNType;
-import com.mobius.software.mqttsn.parser.avps.Topic;
+import com.mobius.software.mqttsn.parser.avps.SNTopic;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Subscribe;
+import com.mobius.software.mqttsn.parser.packet.impl.SNSubscribe;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class SubscribeTests
 {
 	private static final int MESSAGE_ID = 22;
-	private static final Topic TOPIC = new PredefinedTopic(33, QoS.EXACTLY_ONCE);
+	private static final SNTopic TOPIC = new IdentifierTopic(33, SNQoS.EXACTLY_ONCE);
 	private static final boolean DUP = false;
-	private static Subscribe message;
+	private static SNSubscribe message;
 
 	@Before
 	public void setUp()
 	{
-		message = new Subscribe(MESSAGE_ID, TOPIC, DUP);
+		message = new SNSubscribe(MESSAGE_ID, TOPIC, DUP);
 	}
 
 	@Test
@@ -68,11 +68,11 @@ public class SubscribeTests
 	{
 		try
 		{
-			Subscribe subscribe = new Subscribe(MESSAGE_ID, TOPIC, DUP);
+			SNSubscribe subscribe = new SNSubscribe(MESSAGE_ID, TOPIC, DUP);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(subscribe);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			subscribe = (Subscribe) Parser.decode(actual);
+			subscribe = (SNSubscribe) Parser.decode(actual);
 			Assertion.assertSubscribe(message, subscribe);
 		}
 		catch (Exception e)
@@ -105,7 +105,7 @@ public class SubscribeTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidMessageIDZero()
 	{
-		Subscribe Subscribe = new Subscribe(0, TOPIC, DUP);
+		SNSubscribe Subscribe = new SNSubscribe(0, TOPIC, DUP);
 		ByteBuf buf = Parser.encode(Subscribe);
 		Parser.decode(buf);
 	}
@@ -113,8 +113,8 @@ public class SubscribeTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidTopicIDZero()
 	{
-		Topic topic = new PredefinedTopic(0, QoS.AT_MOST_ONCE);
-		Subscribe Subscribe = new Subscribe(MESSAGE_ID, topic, DUP);
+		SNTopic topic = new IdentifierTopic(0, SNQoS.AT_MOST_ONCE);
+		SNSubscribe Subscribe = new SNSubscribe(MESSAGE_ID, topic, DUP);
 		ByteBuf buf = Parser.encode(Subscribe);
 		Parser.decode(buf);
 	}
@@ -122,8 +122,8 @@ public class SubscribeTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidTopicID65535()
 	{
-		Topic topic = new PredefinedTopic(65535, QoS.AT_MOST_ONCE);
-		Subscribe Subscribe = new Subscribe(MESSAGE_ID, topic, DUP);
+		SNTopic topic = new IdentifierTopic(65535, SNQoS.AT_MOST_ONCE);
+		SNSubscribe Subscribe = new SNSubscribe(MESSAGE_ID, topic, DUP);
 		ByteBuf buf = Parser.encode(Subscribe);
 		Parser.decode(buf);
 	}
@@ -139,11 +139,11 @@ public class SubscribeTests
 			for (int i = 0; i < totalSegments; i++)
 				sb.append("/segment").append(i);
 			String topicName = sb.toString();
-			NamedTopic topic = new NamedTopic(topicName, QoS.EXACTLY_ONCE);
-			Subscribe expected = new Subscribe(MESSAGE_ID, topic, DUP);
+			FullTopic topic = new FullTopic(topicName, SNQoS.EXACTLY_ONCE);
+			SNSubscribe expected = new SNSubscribe(MESSAGE_ID, topic, DUP);
 			assertEquals(7 + expected.getTopic().length(), expected.getLength());
 			ByteBuf buf = Parser.encode(expected);
-			Subscribe actual = (Subscribe) Parser.decode(buf);
+			SNSubscribe actual = (SNSubscribe) Parser.decode(buf);
 			assertEquals(expected.getLength(), actual.getLength());
 		}
 		catch (Exception e)

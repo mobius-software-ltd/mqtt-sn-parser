@@ -3,19 +3,19 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.CountableMessage;
 
-public class Pubcomp extends CountableMessage
+public class SNPubrel extends CountableMessage
 {
-	public Pubcomp()
+	public SNPubrel()
 	{
 		super();
 	}
 
-	public Pubcomp(int messageID)
+	public SNPubrel(int messageID)
 	{
 		super(messageID);
 	}
 
-	public Pubcomp reInit(int messageID)
+	public SNPubrel reInit(int messageID)
 	{
 		setMessageID(messageID);
 		return this;
@@ -24,6 +24,6 @@ public class Pubcomp extends CountableMessage
 	@Override
 	public SNType getType()
 	{
-		return SNType.PUBCOMP;
+		return SNType.PUBREL;
 	}
 }

@@ -13,18 +13,18 @@ import org.junit.Test;
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Pingreq;
+import com.mobius.software.mqttsn.parser.packet.impl.SNPingreq;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class PingreqTests
 {
 	private static final String CLIENT_ID = "dummy_123";
-	private static Pingreq message;
+	private static SNPingreq message;
 
 	@BeforeClass
 	public static void beforeClass()
 	{
-		message = new Pingreq(CLIENT_ID);
+		message = new SNPingreq(CLIENT_ID);
 	}
 
 	@Test
@@ -61,11 +61,11 @@ public class PingreqTests
 	{
 		try
 		{
-			Pingreq pingreq = new Pingreq(CLIENT_ID);
+			SNPingreq pingreq = new SNPingreq(CLIENT_ID);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(pingreq);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			pingreq = (Pingreq) Parser.decode(actual);
+			pingreq = (SNPingreq) Parser.decode(actual);
 			Assertion.assertPingreq(message, pingreq);
 		}
 		catch (Exception e)

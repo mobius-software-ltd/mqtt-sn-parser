@@ -3,7 +3,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class Pingresp implements SNMessage
+public class SNPingresp implements SNMessage
 {
 	@Override
 	public int getLength()

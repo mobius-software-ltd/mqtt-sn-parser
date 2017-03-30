@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
-import com.mobius.software.mqttsn.parser.packet.impl.Connect;
+import com.mobius.software.mqttsn.parser.packet.impl.SNConnect;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class ExampleTest
@@ -22,7 +22,7 @@ public class ExampleTest
 			int duration = 10;
 			String clientID = "example_client";
 			boolean willPresent = false;
-			Connect message = new Connect(cleanSession, duration, clientID, willPresent);
+			SNConnect message = new SNConnect(cleanSession, duration, clientID, willPresent);
 
 			// Encode
 			ByteBuf buf = Parser.encode(message);

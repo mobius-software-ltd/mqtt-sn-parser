@@ -14,7 +14,7 @@ import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.ReturnCode;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Puback;
+import com.mobius.software.mqttsn.parser.packet.impl.SNPuback;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class PubackTests
@@ -22,12 +22,12 @@ public class PubackTests
 	private static final int TOPIC_ID = 11;
 	private static final int MESSAGE_ID = 22;
 	private static final ReturnCode CODE = ReturnCode.ACCEPTED;
-	private static Puback message;
+	private static SNPuback message;
 
 	@BeforeClass
 	public static void beforeClass()
 	{
-		message = new Puback(TOPIC_ID, MESSAGE_ID, CODE);
+		message = new SNPuback(TOPIC_ID, MESSAGE_ID, CODE);
 	}
 
 	@Test
@@ -64,11 +64,11 @@ public class PubackTests
 	{
 		try
 		{
-			Puback Puback = new Puback(TOPIC_ID, MESSAGE_ID, CODE);
+			SNPuback Puback = new SNPuback(TOPIC_ID, MESSAGE_ID, CODE);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(Puback);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			Puback = (Puback) Parser.decode(actual);
+			Puback = (SNPuback) Parser.decode(actual);
 			Assertion.assertPuback(message, Puback);
 		}
 		catch (Exception e)
@@ -101,7 +101,7 @@ public class PubackTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidMessageID()
 	{
-		Puback puback = new Puback(TOPIC_ID, 0, CODE);
+		SNPuback puback = new SNPuback(TOPIC_ID, 0, CODE);
 		ByteBuf buf = Parser.encode(puback);
 		Parser.decode(buf);
 	}
@@ -109,7 +109,7 @@ public class PubackTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidTopicIDZero()
 	{
-		Puback puback = new Puback(0x0000, MESSAGE_ID, CODE);
+		SNPuback puback = new SNPuback(0x0000, MESSAGE_ID, CODE);
 		ByteBuf buf = Parser.encode(puback);
 		Parser.decode(buf);
 	}
@@ -117,7 +117,7 @@ public class PubackTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidTopicID65535()
 	{
-		Puback puback = new Puback(0xFFFF, MESSAGE_ID, CODE);
+		SNPuback puback = new SNPuback(0xFFFF, MESSAGE_ID, CODE);
 		ByteBuf buf = Parser.encode(puback);
 		Parser.decode(buf);
 	}

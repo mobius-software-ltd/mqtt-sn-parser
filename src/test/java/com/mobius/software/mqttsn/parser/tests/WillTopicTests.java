@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.Flag;
-import com.mobius.software.mqttsn.parser.avps.NamedTopic;
-import com.mobius.software.mqttsn.parser.avps.QoS;
+import com.mobius.software.mqttsn.parser.avps.FullTopic;
+import com.mobius.software.mqttsn.parser.avps.SNQoS;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 import com.mobius.software.mqttsn.parser.packet.impl.WillTopic;
@@ -24,7 +24,7 @@ public class WillTopicTests
 {
 	private static WillTopic message;
 	private static final boolean RETAIN = true;
-	private static final NamedTopic TOPIC = new NamedTopic("name", QoS.AT_LEAST_ONCE);
+	private static final FullTopic TOPIC = new FullTopic("name", SNQoS.AT_LEAST_ONCE);
 
 	@BeforeClass
 	public static void beforeClass()
@@ -72,7 +72,7 @@ public class WillTopicTests
 			for (int i = 0; i < totalSegments; i++)
 				sb.append("/segment").append(i);
 			String topicName = sb.toString();
-			NamedTopic topic = new NamedTopic(topicName, QoS.EXACTLY_ONCE);
+			FullTopic topic = new FullTopic(topicName, SNQoS.EXACTLY_ONCE);
 			WillTopic expected = new WillTopic(false, topic);
 			assertEquals(5 + expected.getTopic().length(), expected.getLength());
 			ByteBuf buf = Parser.encode(expected);
@@ -178,7 +178,7 @@ public class WillTopicTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidEmptyTopic()
 	{
-		WillTopic willTopic = new WillTopic(true, new NamedTopic("", QoS.AT_LEAST_ONCE));
+		WillTopic willTopic = new WillTopic(true, new FullTopic("", SNQoS.AT_LEAST_ONCE));
 		ByteBuf buf = Parser.encode(willTopic);
 		Parser.decode(buf);
 	}

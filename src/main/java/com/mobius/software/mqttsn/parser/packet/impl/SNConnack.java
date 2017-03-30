@@ -4,19 +4,19 @@ import com.mobius.software.mqttsn.parser.avps.ReturnCode;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.ResponseMessage;
 
-public class Connack extends ResponseMessage
+public class SNConnack extends ResponseMessage
 {
-	public Connack()
+	public SNConnack()
 	{
 		super();
 	}
 
-	public Connack(ReturnCode code)
+	public SNConnack(ReturnCode code)
 	{
 		super(code);
 	}
 
-	public Connack reInit(ReturnCode code)
+	public SNConnack reInit(ReturnCode code)
 	{
 		setCode(code);
 		return this;

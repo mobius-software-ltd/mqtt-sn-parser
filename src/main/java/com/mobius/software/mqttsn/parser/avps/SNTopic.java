@@ -1,10 +1,10 @@
 package com.mobius.software.mqttsn.parser.avps;
 
-public interface Topic
+public interface SNTopic
 {
 	TopicType getType();
 
-	QoS getQos();
+	SNQoS getQos();
 
 	byte[] encode();
 

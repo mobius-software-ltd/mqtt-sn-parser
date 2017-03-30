@@ -1,26 +1,26 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
-import com.mobius.software.mqttsn.parser.avps.NamedTopic;
+import com.mobius.software.mqttsn.parser.avps.FullTopic;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 public class WillTopic implements SNMessage
 {
 	private boolean retain;
-	private NamedTopic topic;
+	private FullTopic topic;
 
 	public WillTopic()
 	{
 		super();
 	}
 
-	public WillTopic(boolean retain, NamedTopic topic)
+	public WillTopic(boolean retain, FullTopic topic)
 	{
 		this.retain = retain;
 		this.topic = topic;
 	}
 
-	public WillTopic reInit(boolean retain, NamedTopic topic)
+	public WillTopic reInit(boolean retain, FullTopic topic)
 	{
 		this.retain = retain;
 		this.topic = topic;
@@ -56,12 +56,12 @@ public class WillTopic implements SNMessage
 		this.retain = retain;
 	}
 
-	public NamedTopic getTopic()
+	public FullTopic getTopic()
 	{
 		return topic;
 	}
 
-	public void setTopic(NamedTopic topic)
+	public void setTopic(FullTopic topic)
 	{
 		this.topic = topic;
 	}

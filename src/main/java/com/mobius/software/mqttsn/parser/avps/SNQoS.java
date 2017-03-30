@@ -25,18 +25,18 @@ import java.util.Map;
 
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 
-public enum QoS
+public enum SNQoS
 {
 	AT_MOST_ONCE((byte) 0), AT_LEAST_ONCE((byte) 1), EXACTLY_ONCE((byte) 2), LEVEL_ONE((byte) 3);
 
 	private byte value;
 
-	private static final Map<Integer, QoS> intToTypeMap = new HashMap<Integer, QoS>();
-	private static final Map<String, QoS> strToTypeMap = new HashMap<String, QoS>();
+	private static final Map<Integer, SNQoS> intToTypeMap = new HashMap<Integer, SNQoS>();
+	private static final Map<String, SNQoS> strToTypeMap = new HashMap<String, SNQoS>();
 
 	static
 	{
-		for (QoS type : QoS.values())
+		for (SNQoS type : SNQoS.values())
 		{
 			intToTypeMap.put((int) type.value, type);
 			strToTypeMap.put(type.name(), type);
@@ -48,17 +48,17 @@ public enum QoS
 		return value;
 	}
 
-	private QoS(final byte leg)
+	private SNQoS(final byte leg)
 	{
 		value = leg;
 	}
 
-	public static QoS valueOf(int type) throws MalformedMessageException
+	public static SNQoS valueOf(int type) throws MalformedMessageException
 	{
 		return intToTypeMap.get(type);
 	}
 
-	public static QoS calculate(final QoS subscriberQos, final QoS publisherQos)
+	public static SNQoS calculate(final SNQoS subscriberQos, final SNQoS publisherQos)
 	{
 		if (subscriberQos.getValue() == publisherQos.getValue())
 			return subscriberQos;

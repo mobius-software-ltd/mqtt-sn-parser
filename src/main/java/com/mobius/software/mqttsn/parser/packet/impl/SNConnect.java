@@ -4,7 +4,7 @@ import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class Connect implements SNMessage
+public class SNConnect implements SNMessage
 {
 	public static final int MQTT_SN_PROTOCOL_ID = 1;
 
@@ -14,12 +14,12 @@ public class Connect implements SNMessage
 	private int duration;
 	private String clientID;
 
-	public Connect()
+	public SNConnect()
 	{
 		super();
 	}
 
-	public Connect(boolean cleanSession, int duration, String clientID, boolean willPresent)
+	public SNConnect(boolean cleanSession, int duration, String clientID, boolean willPresent)
 	{
 		this.cleanSession = cleanSession;
 		this.duration = duration;
@@ -27,7 +27,7 @@ public class Connect implements SNMessage
 		this.willPresent = willPresent;
 	}
 
-	public Connect reInit(boolean cleanSession, int duration, String clientID, boolean willPresent)
+	public SNConnect reInit(boolean cleanSession, int duration, String clientID, boolean willPresent)
 	{
 		this.cleanSession = cleanSession;
 		this.duration = duration;

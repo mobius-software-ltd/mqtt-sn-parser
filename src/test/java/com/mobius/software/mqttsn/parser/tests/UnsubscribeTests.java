@@ -12,25 +12,25 @@ import org.junit.Test;
 
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.Flag;
-import com.mobius.software.mqttsn.parser.avps.NamedTopic;
-import com.mobius.software.mqttsn.parser.avps.PredefinedTopic;
-import com.mobius.software.mqttsn.parser.avps.QoS;
+import com.mobius.software.mqttsn.parser.avps.FullTopic;
+import com.mobius.software.mqttsn.parser.avps.IdentifierTopic;
+import com.mobius.software.mqttsn.parser.avps.SNQoS;
 import com.mobius.software.mqttsn.parser.avps.SNType;
-import com.mobius.software.mqttsn.parser.avps.Topic;
+import com.mobius.software.mqttsn.parser.avps.SNTopic;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Unsubscribe;
+import com.mobius.software.mqttsn.parser.packet.impl.SNUnsubscribe;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class UnsubscribeTests
 {
 	private static final int MESSAGE_ID = 22;
-	private static final Topic TOPIC = new PredefinedTopic(33, QoS.AT_MOST_ONCE);
-	private static Unsubscribe message;
+	private static final SNTopic TOPIC = new IdentifierTopic(33, SNQoS.AT_MOST_ONCE);
+	private static SNUnsubscribe message;
 
 	@Before
 	public void setUp()
 	{
-		message = new Unsubscribe(MESSAGE_ID, TOPIC);
+		message = new SNUnsubscribe(MESSAGE_ID, TOPIC);
 	}
 
 	@Test
@@ -67,11 +67,11 @@ public class UnsubscribeTests
 	{
 		try
 		{
-			Unsubscribe unsubscribe = new Unsubscribe(MESSAGE_ID, TOPIC);
+			SNUnsubscribe unsubscribe = new SNUnsubscribe(MESSAGE_ID, TOPIC);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(unsubscribe);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			unsubscribe = (Unsubscribe) Parser.decode(actual);
+			unsubscribe = (SNUnsubscribe) Parser.decode(actual);
 			Assertion.assertUnsubscribe(message, unsubscribe);
 		}
 		catch (Exception e)
@@ -104,7 +104,7 @@ public class UnsubscribeTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidMessageIDZero()
 	{
-		Unsubscribe Unsubscribe = new Unsubscribe(0, TOPIC);
+		SNUnsubscribe Unsubscribe = new SNUnsubscribe(0, TOPIC);
 		ByteBuf buf = Parser.encode(Unsubscribe);
 		Parser.decode(buf);
 	}
@@ -112,8 +112,8 @@ public class UnsubscribeTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidTopicIDZero()
 	{
-		Topic topic = new PredefinedTopic(0, QoS.AT_MOST_ONCE);
-		Unsubscribe Unsubscribe = new Unsubscribe(MESSAGE_ID, topic);
+		SNTopic topic = new IdentifierTopic(0, SNQoS.AT_MOST_ONCE);
+		SNUnsubscribe Unsubscribe = new SNUnsubscribe(MESSAGE_ID, topic);
 		ByteBuf buf = Parser.encode(Unsubscribe);
 		Parser.decode(buf);
 	}
@@ -121,8 +121,8 @@ public class UnsubscribeTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidTopicID65535()
 	{
-		Topic topic = new PredefinedTopic(65535, QoS.AT_MOST_ONCE);
-		Unsubscribe Unsubscribe = new Unsubscribe(MESSAGE_ID, topic);
+		SNTopic topic = new IdentifierTopic(65535, SNQoS.AT_MOST_ONCE);
+		SNUnsubscribe Unsubscribe = new SNUnsubscribe(MESSAGE_ID, topic);
 		ByteBuf buf = Parser.encode(Unsubscribe);
 		Parser.decode(buf);
 	}
@@ -138,11 +138,11 @@ public class UnsubscribeTests
 			for (int i = 0; i < totalSegments; i++)
 				sb.append("/segment").append(i);
 			String topicName = sb.toString();
-			NamedTopic topic = new NamedTopic(topicName, QoS.EXACTLY_ONCE);
-			Unsubscribe expected = new Unsubscribe(MESSAGE_ID, topic);
+			FullTopic topic = new FullTopic(topicName, SNQoS.EXACTLY_ONCE);
+			SNUnsubscribe expected = new SNUnsubscribe(MESSAGE_ID, topic);
 			assertEquals(7 + expected.getTopic().length(), expected.getLength());
 			ByteBuf buf = Parser.encode(expected);
-			Unsubscribe actual = (Unsubscribe) Parser.decode(buf);
+			SNUnsubscribe actual = (SNUnsubscribe) Parser.decode(buf);
 			assertEquals(expected.getLength(), actual.getLength());
 		}
 		catch (Exception e)

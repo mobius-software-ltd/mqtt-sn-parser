@@ -1,25 +1,25 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
-import com.mobius.software.mqttsn.parser.avps.SNType;
-import com.mobius.software.mqttsn.parser.avps.Topic;
-import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
-
 import io.netty.buffer.ByteBuf;
 
-public class Publish implements SNMessage
+import com.mobius.software.mqttsn.parser.avps.SNTopic;
+import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
+
+public class SNPublish implements SNMessage
 {
-	private int messageID;
-	private Topic topic;
+	private Integer messageID;
+	private SNTopic topic;
 	private ByteBuf content;
 	private boolean dup;
 	private boolean retain;
 
-	public Publish()
+	public SNPublish()
 	{
 		super();
 	}
 
-	public Publish(int messageID, Topic topic, ByteBuf content, boolean dup, boolean retain)
+	public SNPublish(Integer messageID, SNTopic topic, ByteBuf content, boolean dup, boolean retain)
 	{
 		this.messageID = messageID;
 		this.topic = topic;
@@ -28,7 +28,7 @@ public class Publish implements SNMessage
 		this.retain = retain;
 	}
 
-	public Publish reInit(int messageID, Topic topic, ByteBuf content, boolean dup, boolean retain)
+	public SNPublish reInit(Integer messageID, SNTopic topic, ByteBuf content, boolean dup, boolean retain)
 	{
 		this.messageID = messageID;
 		this.topic = topic;
@@ -54,22 +54,22 @@ public class Publish implements SNMessage
 		return SNType.PUBLISH;
 	}
 
-	public int getMessageID()
+	public Integer getMessageID()
 	{
 		return messageID;
 	}
 
-	public void setMessageID(int messageID)
+	public void setMessageID(Integer messageID)
 	{
 		this.messageID = messageID;
 	}
 
-	public Topic getTopic()
+	public SNTopic getTopic()
 	{
 		return topic;
 	}
 
-	public void setTopic(Topic topic)
+	public void setTopic(SNTopic topic)
 	{
 		this.topic = topic;
 	}

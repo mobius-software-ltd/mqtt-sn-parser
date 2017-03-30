@@ -12,28 +12,28 @@ import org.junit.Test;
 
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.Flag;
-import com.mobius.software.mqttsn.parser.avps.PredefinedTopic;
-import com.mobius.software.mqttsn.parser.avps.QoS;
+import com.mobius.software.mqttsn.parser.avps.IdentifierTopic;
+import com.mobius.software.mqttsn.parser.avps.SNQoS;
 import com.mobius.software.mqttsn.parser.avps.SNType;
-import com.mobius.software.mqttsn.parser.avps.Topic;
+import com.mobius.software.mqttsn.parser.avps.SNTopic;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Publish;
+import com.mobius.software.mqttsn.parser.packet.impl.SNPublish;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class PublishTests
 {
 	private static final int MESSAGE_ID = 22;
-	private static final Topic TOPIC = new PredefinedTopic(33, QoS.EXACTLY_ONCE);
+	private static final SNTopic TOPIC = new IdentifierTopic(33, SNQoS.EXACTLY_ONCE);
 	private static ByteBuf content;
 	private static final boolean DUP = false;
 	private static final boolean RETAIN = true;
-	private static Publish message;
+	private static SNPublish message;
 
 	@Before
 	public void setUp()
 	{
 		content = loadContent();
-		message = new Publish(MESSAGE_ID, TOPIC, content, DUP, RETAIN);
+		message = new SNPublish(MESSAGE_ID, TOPIC, content, DUP, RETAIN);
 	}
 
 	private static ByteBuf loadContent()
@@ -78,11 +78,11 @@ public class PublishTests
 	{
 		try
 		{
-			Publish publish = new Publish(MESSAGE_ID, TOPIC, loadContent(), DUP, RETAIN);
+			SNPublish publish = new SNPublish(MESSAGE_ID, TOPIC, loadContent(), DUP, RETAIN);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(publish);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			publish = (Publish) Parser.decode(actual);
+			publish = (SNPublish) Parser.decode(actual);
 			Assertion.assertPublish(message, publish);
 		}
 		catch (Exception e)
@@ -145,7 +145,7 @@ public class PublishTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidMessageIDZero()
 	{
-		Publish Publish = new Publish(0, TOPIC, loadContent(), DUP, RETAIN);
+		SNPublish Publish = new SNPublish(0, TOPIC, loadContent(), DUP, RETAIN);
 		ByteBuf buf = Parser.encode(Publish);
 		Parser.decode(buf);
 	}
@@ -153,8 +153,8 @@ public class PublishTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidMessageIDNonZeroWithQos0()
 	{
-		Topic topic = new PredefinedTopic(123, QoS.AT_LEAST_ONCE);
-		Publish Publish = new Publish(0, topic, loadContent(), DUP, RETAIN);
+		SNTopic topic = new IdentifierTopic(123, SNQoS.AT_LEAST_ONCE);
+		SNPublish Publish = new SNPublish(0, topic, loadContent(), DUP, RETAIN);
 		ByteBuf buf = Parser.encode(Publish);
 		Parser.decode(buf);
 	}
@@ -162,8 +162,8 @@ public class PublishTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidTopicIDZero()
 	{
-		Topic topic = new PredefinedTopic(0, QoS.AT_MOST_ONCE);
-		Publish Publish = new Publish(MESSAGE_ID, topic, loadContent(), DUP, RETAIN);
+		SNTopic topic = new IdentifierTopic(0, SNQoS.AT_MOST_ONCE);
+		SNPublish Publish = new SNPublish(MESSAGE_ID, topic, loadContent(), DUP, RETAIN);
 		ByteBuf buf = Parser.encode(Publish);
 		Parser.decode(buf);
 	}
@@ -171,8 +171,8 @@ public class PublishTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidTopicID65535()
 	{
-		Topic topic = new PredefinedTopic(65535, QoS.AT_MOST_ONCE);
-		Publish Publish = new Publish(MESSAGE_ID, topic, loadContent(), DUP, RETAIN);
+		SNTopic topic = new IdentifierTopic(65535, SNQoS.AT_MOST_ONCE);
+		SNPublish Publish = new SNPublish(MESSAGE_ID, topic, loadContent(), DUP, RETAIN);
 		ByteBuf buf = Parser.encode(Publish);
 		Parser.decode(buf);
 	}
@@ -180,7 +180,7 @@ public class PublishTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidEmptyContent()
 	{
-		Publish publish = new Publish(MESSAGE_ID, TOPIC, Unpooled.EMPTY_BUFFER, DUP, RETAIN);
+		SNPublish publish = new SNPublish(MESSAGE_ID, TOPIC, Unpooled.EMPTY_BUFFER, DUP, RETAIN);
 		ByteBuf buf = Parser.encode(publish);
 		Parser.decode(buf);
 	}
@@ -194,10 +194,10 @@ public class PublishTests
 			ByteBuf content = Unpooled.buffer(size);
 			for (int i = 0; i < size; i++)
 				content.writeByte(i);
-			Publish expected = new Publish(MESSAGE_ID, TOPIC, content, DUP, RETAIN);
+			SNPublish expected = new SNPublish(MESSAGE_ID, TOPIC, content, DUP, RETAIN);
 			assertEquals(9 + content.capacity(), expected.getLength());
 			ByteBuf buf = Parser.encode(expected);
-			Publish actual = (Publish) Parser.decode(buf);
+			SNPublish actual = (SNPublish) Parser.decode(buf);
 			assertEquals(expected.getLength(), actual.getLength());
 		}
 		catch (Exception e)

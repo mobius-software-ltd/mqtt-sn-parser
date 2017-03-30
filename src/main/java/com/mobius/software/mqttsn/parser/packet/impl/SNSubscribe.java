@@ -1,29 +1,32 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNType;
-import com.mobius.software.mqttsn.parser.avps.Topic;
+import com.mobius.software.mqttsn.parser.avps.SNTopic;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class Unsubscribe implements SNMessage
+public class SNSubscribe implements SNMessage
 {
 	private int messageID;
-	private Topic topic;
+	private SNTopic topic;
+	private boolean dup;
 
-	public Unsubscribe()
+	public SNSubscribe()
 	{
 		super();
 	}
 
-	public Unsubscribe(int messageID, Topic topic)
+	public SNSubscribe(int messageID, SNTopic topic, boolean dup)
 	{
 		this.messageID = messageID;
 		this.topic = topic;
+		this.dup = dup;
 	}
 
-	public Unsubscribe reInit(int messageID, Topic topic)
+	public SNSubscribe reInit(int messageID, SNTopic topic, boolean dup)
 	{
 		this.messageID = messageID;
 		this.topic = topic;
+		this.dup = dup;
 		return this;
 	}
 
@@ -40,7 +43,7 @@ public class Unsubscribe implements SNMessage
 	@Override
 	public SNType getType()
 	{
-		return SNType.UNSUBSCRIBE;
+		return SNType.SUBSCRIBE;
 	}
 
 	public int getMessageID()
@@ -53,13 +56,23 @@ public class Unsubscribe implements SNMessage
 		this.messageID = messageID;
 	}
 
-	public Topic getTopic()
+	public SNTopic getTopic()
 	{
 		return topic;
 	}
 
-	public void setTopic(Topic topic)
+	public void setTopic(SNTopic topic)
 	{
 		this.topic = topic;
+	}
+
+	public boolean isDup()
+	{
+		return dup;
+	}
+
+	public void setDup(boolean dup)
+	{
+		this.dup = dup;
 	}
 }

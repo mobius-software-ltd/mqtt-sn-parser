@@ -11,30 +11,30 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mobius.software.mqttsn.parser.Parser;
-import com.mobius.software.mqttsn.parser.avps.PredefinedTopic;
-import com.mobius.software.mqttsn.parser.avps.QoS;
+import com.mobius.software.mqttsn.parser.avps.IdentifierTopic;
+import com.mobius.software.mqttsn.parser.avps.SNQoS;
 import com.mobius.software.mqttsn.parser.avps.Radius;
 import com.mobius.software.mqttsn.parser.avps.SNType;
-import com.mobius.software.mqttsn.parser.avps.Topic;
+import com.mobius.software.mqttsn.parser.avps.SNTopic;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 import com.mobius.software.mqttsn.parser.packet.impl.Encapsulated;
-import com.mobius.software.mqttsn.parser.packet.impl.Subscribe;
+import com.mobius.software.mqttsn.parser.packet.impl.SNSubscribe;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class EncapsulatedTests
 {
 	private static final int MESSAGE_ID = 22;
-	private static final Topic TOPIC = new PredefinedTopic(33, QoS.EXACTLY_ONCE);
+	private static final SNTopic TOPIC = new IdentifierTopic(33, SNQoS.EXACTLY_ONCE);
 	private static final boolean DUP = false;
 	private static final Radius RADIUS = Radius.RADIUS_1;
 	private static final String WIRELESS_NODE_ID = "dummy id";
-	private static Subscribe innerMessage;
+	private static SNSubscribe innerMessage;
 	private static Encapsulated message;
 
 	@Before
 	public void setUp()
 	{
-		innerMessage = new Subscribe(MESSAGE_ID, TOPIC, DUP);
+		innerMessage = new SNSubscribe(MESSAGE_ID, TOPIC, DUP);
 		message = new Encapsulated(RADIUS, WIRELESS_NODE_ID, innerMessage);
 	}
 

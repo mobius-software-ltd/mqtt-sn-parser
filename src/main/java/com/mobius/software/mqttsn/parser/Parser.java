@@ -21,7 +21,8 @@ public class Parser
 
 	public static final WillTopicReq WILL_TOPIC_REQ = new WillTopicReq();
 	public static final WillMsgReq WILL_MSG_REQ = new WillMsgReq();
-	public static final Pingresp PING_RESP = new Pingresp();
+	public static final SNPingresp PING_RESP = new SNPingresp();
+	public static final SNDisconnect DISCONNECT = new SNDisconnect();
 
 	public static SNMessage decode(ByteBuf buf)
 	{
@@ -69,7 +70,7 @@ public class Parser
 				bytesLeft--;
 				int protocolID = buf.readByte();
 				bytesLeft--;
-				if (protocolID != Connect.MQTT_SN_PROTOCOL_ID)
+				if (protocolID != SNConnect.MQTT_SN_PROTOCOL_ID)
 					throw new MalformedMessageException("Invalid protocolID " + protocolID);
 				int connectDuration = buf.readUnsignedShort();
 				bytesLeft -= 2;
@@ -78,12 +79,12 @@ public class Parser
 				byte[] connectClientIDBytes = new byte[bytesLeft];
 				buf.readBytes(connectClientIDBytes);
 				String connectClientID = new String(connectClientIDBytes, ENCODING);
-				message = new Connect(connectFlags.isCleanSession(), connectDuration, connectClientID, connectFlags.isWill());
+				message = new SNConnect(connectFlags.isCleanSession(), connectDuration, connectClientID, connectFlags.isWill());
 				break;
 
 			case CONNACK:
 				ReturnCode connackCode = ReturnCode.valueOf(buf.readByte());
-				message = new Connack(connackCode);
+				message = new SNConnack(connackCode);
 				break;
 
 			case WILL_TOPIC_REQ:
@@ -92,7 +93,7 @@ public class Parser
 
 			case WILL_TOPIC:
 				boolean willTopicRetain = false;
-				NamedTopic willTopic = null;
+				FullTopic willTopic = null;
 				if (bytesLeft > 0)
 				{
 					Flags willTopicFlags = Flags.decode(buf.readByte(), type);
@@ -103,7 +104,7 @@ public class Parser
 					byte[] willTopicBytes = new byte[bytesLeft];
 					buf.readBytes(willTopicBytes);
 					String willTopicValue = new String(willTopicBytes, ENCODING);
-					willTopic = new NamedTopic(willTopicValue, willTopicFlags.getQos());
+					willTopic = new FullTopic(willTopicValue, willTopicFlags.getQos());
 				}
 				message = new WillTopic(willTopicRetain, willTopic);
 				break;
@@ -155,22 +156,22 @@ public class Parser
 				bytesLeft -= 2;
 				int publishMessageID = buf.readUnsignedShort();
 				bytesLeft -= 2;
-				if (publishFlags.getQos() != QoS.AT_MOST_ONCE && publishMessageID == 0)
+				if (publishFlags.getQos() != SNQoS.AT_MOST_ONCE && publishMessageID == 0)
 					throw new MalformedMessageException("invalid PUBLISH QoS-0 messageID:" + publishMessageID);
 				if (!ValuesValidator.canRead(buf, bytesLeft))
 					throw new MalformedMessageException(type + " content must not be empty");
 				ByteBuf publishContent = Unpooled.buffer(bytesLeft);
 				buf.readBytes(publishContent);
-				Topic publishTopic = null;
+				SNTopic publishTopic = null;
 				if (publishFlags.getTopicType() == TopicType.SHORT)
 					publishTopic = new ShortTopic(String.valueOf(publishTopicID), publishFlags.getQos());
 				else
 				{
 					if (!ValuesValidator.validateTopicID(publishTopicID))
 						throw new MalformedMessageException(type + " invalid topicID value " + publishTopicID);
-					publishTopic = new PredefinedTopic(publishTopicID, publishFlags.getQos());
+					publishTopic = new IdentifierTopic(publishTopicID, publishFlags.getQos());
 				}
-				message = new Publish(publishMessageID, publishTopic, publishContent, publishFlags.isDup(), publishFlags.isRetain());
+				message = new SNPublish(publishMessageID, publishTopic, publishContent, publishFlags.isDup(), publishFlags.isRetain());
 				break;
 
 			case PUBACK:
@@ -181,28 +182,28 @@ public class Parser
 				if (!ValuesValidator.validateMessageID(pubackMessageID))
 					throw new MalformedMessageException(type + " invalid messageID " + pubackMessageID);
 				ReturnCode pubackCode = ReturnCode.valueOf(buf.readByte());
-				message = new Puback(pubackTopicID, pubackMessageID, pubackCode);
+				message = new SNPuback(pubackTopicID, pubackMessageID, pubackCode);
 				break;
 
 			case PUBREC:
 				int pubrecMessageID = buf.readUnsignedShort();
 				if (!ValuesValidator.validateMessageID(pubrecMessageID))
 					throw new MalformedMessageException(type + " invalid messageID " + pubrecMessageID);
-				message = new Pubrec(pubrecMessageID);
+				message = new SNPubrec(pubrecMessageID);
 				break;
 
 			case PUBREL:
 				int pubrelMessageID = buf.readUnsignedShort();
 				if (!ValuesValidator.validateMessageID(pubrelMessageID))
 					throw new MalformedMessageException(type + " invalid messageID " + pubrelMessageID);
-				message = new Pubrel(pubrelMessageID);
+				message = new SNPubrel(pubrelMessageID);
 				break;
 
 			case PUBCOMP:
 				int pubcompMessageID = buf.readUnsignedShort();
 				if (!ValuesValidator.validateMessageID(pubcompMessageID))
 					throw new MalformedMessageException(type + " invalid messageID " + pubcompMessageID);
-				message = new Pubcomp(pubcompMessageID);
+				message = new SNPubcomp(pubcompMessageID);
 				break;
 
 			case SUBSCRIBE:
@@ -216,25 +217,25 @@ public class Parser
 					throw new MalformedMessageException(type + " invalid topic encoding");
 				byte[] subscribeTopicBytes = new byte[bytesLeft];
 				buf.readBytes(subscribeTopicBytes);
-				Topic subscribeTopic = null;
+				SNTopic subscribeTopic = null;
 				switch (subscribeFlags.getTopicType())
 				{
 				case NAMED:
 					String subscribeTopicName = new String(subscribeTopicBytes, ENCODING);
-					subscribeTopic = new NamedTopic(subscribeTopicName, subscribeFlags.getQos());
+					subscribeTopic = new FullTopic(subscribeTopicName, subscribeFlags.getQos());
 					break;
-				case PREDEFINED:
+				case ID:
 					int subscribeTopicID = ByteBuffer.wrap(subscribeTopicBytes).getShort();
 					if (!ValuesValidator.validateTopicID(subscribeTopicID))
 						throw new MalformedMessageException(type + " invalid topicID value " + subscribeTopicID);
-					subscribeTopic = new PredefinedTopic(subscribeTopicID, subscribeFlags.getQos());
+					subscribeTopic = new IdentifierTopic(subscribeTopicID, subscribeFlags.getQos());
 					break;
 				case SHORT:
 					String subscribeTopicShortName = new String(subscribeTopicBytes, ENCODING);
 					subscribeTopic = new ShortTopic(subscribeTopicShortName, subscribeFlags.getQos());
 					break;
 				}
-				message = new Subscribe(subscribeMessageID, subscribeTopic, subscribeFlags.isDup());
+				message = new SNSubscribe(subscribeMessageID, subscribeTopic, subscribeFlags.isDup());
 				break;
 
 			case SUBACK:
@@ -246,7 +247,7 @@ public class Parser
 				if (!ValuesValidator.validateMessageID(subackMessageID))
 					throw new MalformedMessageException(type + " invalid messageID " + subackMessageID);
 				ReturnCode subackCode = ReturnCode.valueOf(buf.readByte());
-				message = new Suback(subackTopicID, subackMessageID, subackCode, subackFlags.getQos());
+				message = new SNSuback(subackTopicID, subackMessageID, subackCode, subackFlags.getQos());
 				break;
 
 			case UNSUBSCRIBE:
@@ -258,32 +259,32 @@ public class Parser
 				bytesLeft -= 2;
 				byte[] unsubscribeTopicBytes = new byte[bytesLeft];
 				buf.readBytes(unsubscribeTopicBytes);
-				Topic unsubscribeTopic = null;
+				SNTopic unsubscribeTopic = null;
 				switch (unsubscribeFlags.getTopicType())
 				{
 				case NAMED:
 					String unsubscribeTopicName = new String(unsubscribeTopicBytes, ENCODING);
-					unsubscribeTopic = new NamedTopic(unsubscribeTopicName, unsubscribeFlags.getQos());
+					unsubscribeTopic = new FullTopic(unsubscribeTopicName, unsubscribeFlags.getQos());
 					break;
-				case PREDEFINED:
+				case ID:
 					int unsubscribeTopicID = ByteBuffer.wrap(unsubscribeTopicBytes).getShort();
 					if (!ValuesValidator.validateTopicID(unsubscribeTopicID))
 						throw new MalformedMessageException(type + " invalid topicID value " + unsubscribeTopicID);
-					unsubscribeTopic = new PredefinedTopic(unsubscribeTopicID, unsubscribeFlags.getQos());
+					unsubscribeTopic = new IdentifierTopic(unsubscribeTopicID, unsubscribeFlags.getQos());
 					break;
 				case SHORT:
 					String unsubscribeTopicShortName = new String(unsubscribeTopicBytes, ENCODING);
 					unsubscribeTopic = new ShortTopic(unsubscribeTopicShortName, unsubscribeFlags.getQos());
 					break;
 				}
-				message = new Unsubscribe(unsubscribeMessageID, unsubscribeTopic);
+				message = new SNUnsubscribe(unsubscribeMessageID, unsubscribeTopic);
 				break;
 
 			case UNSUBACK:
 				int unsubackMessageID = buf.readUnsignedShort();
 				if (!ValuesValidator.validateMessageID(unsubackMessageID))
 					throw new MalformedMessageException(type + " invalid messageID " + unsubackMessageID);
-				message = new Unsuback(unsubackMessageID);
+				message = new SNUnsuback(unsubackMessageID);
 				break;
 
 			case PINGREQ:
@@ -294,7 +295,7 @@ public class Parser
 					buf.readBytes(pingreqClientIDValue);
 					pingreqClientID = new String(pingreqClientIDValue, ENCODING);
 				}
-				message = new Pingreq(pingreqClientID);
+				message = new SNPingreq(pingreqClientID);
 				break;
 
 			case PINGRESP:
@@ -305,11 +306,11 @@ public class Parser
 				int duration = 0;
 				if (bytesLeft > 0)
 					duration = buf.readUnsignedShort();
-				message = new Disconnect(duration);
+				message = new SNDisconnect(duration);
 				break;
 
 			case WILL_TOPIC_UPD:
-				NamedTopic willTopicUpdTopic = null;
+				FullTopic willTopicUpdTopic = null;
 				boolean willTopicUpdateRetain = false;
 				if (bytesLeft > 0)
 				{
@@ -319,7 +320,7 @@ public class Parser
 					byte[] willTopicUpdTopicBytes = new byte[bytesLeft];
 					buf.readBytes(willTopicUpdTopicBytes);
 					String willTopicUpdTopicValue = new String(willTopicUpdTopicBytes, ENCODING);
-					willTopicUpdTopic = new NamedTopic(willTopicUpdTopicValue, willTopicUpdFlags.getQos());
+					willTopicUpdTopic = new FullTopic(willTopicUpdTopicValue, willTopicUpdFlags.getQos());
 				}
 				message = new WillTopicUpd(willTopicUpdateRetain, willTopicUpdTopic);
 				break;
@@ -413,7 +414,7 @@ public class Parser
 			break;
 
 		case CONNECT:
-			Connect connect = (Connect) message;
+			SNConnect connect = (SNConnect) message;
 			byte connectFlagsByte = Flags.encode(false, null, false, connect.isWillPresent(), connect.isCleanSession(), null);
 			buf.writeByte(connectFlagsByte);
 			buf.writeByte(connect.getProtocolID());
@@ -458,7 +459,7 @@ public class Parser
 			break;
 
 		case PUBLISH:
-			Publish publish = (Publish) message;
+			SNPublish publish = (SNPublish) message;
 			byte publishFlagsByte = Flags.encode(publish.isDup(), publish.getTopic().getQos(), publish.isRetain(), false, false, publish.getTopic().getType());
 			buf.writeByte(publishFlagsByte);
 			buf.writeBytes(publish.getTopic().encode());
@@ -467,7 +468,7 @@ public class Parser
 			break;
 
 		case PUBACK:
-			Puback puback = (Puback) message;
+			SNPuback puback = (SNPuback) message;
 			buf.writeShort(puback.getTopicID());
 			buf.writeShort(puback.getMessageID());
 			buf.writeByte(puback.getCode().getValue());
@@ -482,7 +483,7 @@ public class Parser
 			break;
 
 		case SUBSCRIBE:
-			Subscribe subscribe = (Subscribe) message;
+			SNSubscribe subscribe = (SNSubscribe) message;
 			byte subscribeFlags = Flags.encode(subscribe.isDup(), subscribe.getTopic().getQos(), false, false, false, subscribe.getTopic().getType());
 			buf.writeByte(subscribeFlags);
 			buf.writeShort(subscribe.getMessageID());
@@ -490,7 +491,7 @@ public class Parser
 			break;
 
 		case SUBACK:
-			Suback suback = (Suback) message;
+			SNSuback suback = (SNSuback) message;
 			byte subackByte = Flags.encode(false, suback.getAllowedQos(), false, false, false, null);
 			buf.writeByte(subackByte);
 			buf.writeShort(suback.getTopicID());
@@ -499,7 +500,7 @@ public class Parser
 			break;
 
 		case UNSUBSCRIBE:
-			Unsubscribe unsubscribe = (Unsubscribe) message;
+			SNUnsubscribe unsubscribe = (SNUnsubscribe) message;
 			byte unsubscribeFlags = Flags.encode(false, null, false, false, false, unsubscribe.getTopic().getType());
 			buf.writeByte(unsubscribeFlags);
 			buf.writeShort(unsubscribe.getMessageID());
@@ -509,7 +510,7 @@ public class Parser
 		case PINGREQ:
 			if (length > 2)
 			{
-				Pingreq pingreq = (Pingreq) message;
+				SNPingreq pingreq = (SNPingreq) message;
 				buf.writeBytes(pingreq.getClientID().getBytes());
 			}
 			break;
@@ -517,7 +518,7 @@ public class Parser
 		case DISCONNECT:
 			if (length > 2)
 			{
-				Disconnect disconnect = (Disconnect) message;
+				SNDisconnect disconnect = (SNDisconnect) message;
 				buf.writeShort(disconnect.getDuration());
 			}
 			break;

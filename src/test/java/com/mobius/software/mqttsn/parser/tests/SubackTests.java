@@ -12,11 +12,11 @@ import org.junit.Test;
 
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.Flag;
-import com.mobius.software.mqttsn.parser.avps.QoS;
+import com.mobius.software.mqttsn.parser.avps.SNQoS;
 import com.mobius.software.mqttsn.parser.avps.ReturnCode;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Suback;
+import com.mobius.software.mqttsn.parser.packet.impl.SNSuback;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class SubackTests
@@ -24,13 +24,13 @@ public class SubackTests
 	private static final int TOPIC_ID = 11;
 	private static final int MESSAGE_ID = 22;
 	private static final ReturnCode CODE = ReturnCode.ACCEPTED;
-	private static final QoS QOS = QoS.AT_LEAST_ONCE;
-	private static Suback message;
+	private static final SNQoS QOS = SNQoS.AT_LEAST_ONCE;
+	private static SNSuback message;
 
 	@BeforeClass
 	public static void beforeClass()
 	{
-		message = new Suback(TOPIC_ID, MESSAGE_ID, CODE, QOS);
+		message = new SNSuback(TOPIC_ID, MESSAGE_ID, CODE, QOS);
 	}
 
 	@Test
@@ -67,11 +67,11 @@ public class SubackTests
 	{
 		try
 		{
-			Suback Suback = new Suback(TOPIC_ID, MESSAGE_ID, CODE, QOS);
+			SNSuback Suback = new SNSuback(TOPIC_ID, MESSAGE_ID, CODE, QOS);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(Suback);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			Suback = (Suback) Parser.decode(actual);
+			Suback = (SNSuback) Parser.decode(actual);
 			Assertion.assertSuback(message, Suback);
 		}
 		catch (Exception e)
@@ -104,7 +104,7 @@ public class SubackTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidMessageID()
 	{
-		Suback suback = new Suback(TOPIC_ID, 0, CODE, QOS);
+		SNSuback suback = new SNSuback(TOPIC_ID, 0, CODE, QOS);
 		ByteBuf buf = Parser.encode(suback);
 		Parser.decode(buf);
 	}
@@ -112,7 +112,7 @@ public class SubackTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidTopicIDZero()
 	{
-		Suback suback = new Suback(0x0000, MESSAGE_ID, CODE, QOS);
+		SNSuback suback = new SNSuback(0x0000, MESSAGE_ID, CODE, QOS);
 		ByteBuf buf = Parser.encode(suback);
 		Parser.decode(buf);
 	}
@@ -120,7 +120,7 @@ public class SubackTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidTopicID65535()
 	{
-		Suback suback = new Suback(0xFFFF, MESSAGE_ID, CODE, QOS);
+		SNSuback suback = new SNSuback(0xFFFF, MESSAGE_ID, CODE, QOS);
 		ByteBuf buf = Parser.encode(suback);
 		Parser.decode(buf);
 	}

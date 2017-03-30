@@ -13,18 +13,18 @@ import org.junit.Test;
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Unsuback;
+import com.mobius.software.mqttsn.parser.packet.impl.SNUnsuback;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class UnsubackTests
 {
 	private static final int MESSAGE_ID = 22;
-	private static Unsuback message;
+	private static SNUnsuback message;
 
 	@BeforeClass
 	public static void beforeClass()
 	{
-		message = new Unsuback(MESSAGE_ID);
+		message = new SNUnsuback(MESSAGE_ID);
 	}
 
 	@Test
@@ -61,11 +61,11 @@ public class UnsubackTests
 	{
 		try
 		{
-			Unsuback Unsuback = new Unsuback(MESSAGE_ID);
+			SNUnsuback Unsuback = new SNUnsuback(MESSAGE_ID);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(Unsuback);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			Unsuback = (Unsuback) Parser.decode(actual);
+			Unsuback = (SNUnsuback) Parser.decode(actual);
 			Assertion.assertUnsuback(message, Unsuback);
 		}
 		catch (Exception e)
@@ -98,7 +98,7 @@ public class UnsubackTests
 	@Test(expected = MalformedMessageException.class)
 	public void testInvalidMessageID()
 	{
-		Unsuback unsuback = new Unsuback(0);
+		SNUnsuback unsuback = new SNUnsuback(0);
 		ByteBuf buf = Parser.encode(unsuback);
 		Parser.decode(buf);
 	}

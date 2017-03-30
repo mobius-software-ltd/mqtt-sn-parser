@@ -2,23 +2,23 @@ package com.mobius.software.mqttsn.parser.avps;
 
 import java.nio.ByteBuffer;
 
-public class PredefinedTopic implements Topic
+public class IdentifierTopic implements SNTopic
 {
 	private int value;
-	private QoS qos;
+	private SNQoS qos;
 
-	public PredefinedTopic()
+	public IdentifierTopic()
 	{
 		super();
 	}
 
-	public PredefinedTopic(int value, QoS qos)
+	public IdentifierTopic(int value, SNQoS qos)
 	{
 		this.value = value;
 		this.qos = qos;
 	}
 
-	public PredefinedTopic reInit(int value, QoS qos)
+	public IdentifierTopic reInit(int value, SNQoS qos)
 	{
 		this.value = value;
 		this.qos = qos;
@@ -28,7 +28,7 @@ public class PredefinedTopic implements Topic
 	@Override
 	public TopicType getType()
 	{
-		return TopicType.PREDEFINED;
+		return TopicType.ID;
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class PredefinedTopic implements Topic
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PredefinedTopic other = (PredefinedTopic) obj;
+		IdentifierTopic other = (IdentifierTopic) obj;
 		if (qos != other.qos)
 			return false;
 		if (value != other.value)
@@ -80,12 +80,12 @@ public class PredefinedTopic implements Topic
 		this.value = value;
 	}
 
-	public QoS getQos()
+	public SNQoS getQos()
 	{
 		return qos;
 	}
 
-	public void setQos(QoS qos)
+	public void setQos(SNQoS qos)
 	{
 		this.qos = qos;
 	}

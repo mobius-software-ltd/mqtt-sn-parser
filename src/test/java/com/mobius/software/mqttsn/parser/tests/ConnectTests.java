@@ -14,7 +14,7 @@ import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.Flag;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
-import com.mobius.software.mqttsn.parser.packet.impl.Connect;
+import com.mobius.software.mqttsn.parser.packet.impl.SNConnect;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
 
 public class ConnectTests
@@ -23,12 +23,12 @@ public class ConnectTests
 	private static final int duration = 11;
 	private static final String clientID = "dummy_123";
 	private static final boolean willPresent = true;
-	private static Connect message;
+	private static SNConnect message;
 
 	@BeforeClass
 	public static void beforeClass()
 	{
-		message = new Connect(cleanSession, duration, clientID, willPresent);
+		message = new SNConnect(cleanSession, duration, clientID, willPresent);
 	}
 
 	@Test
@@ -65,11 +65,11 @@ public class ConnectTests
 	{
 		try
 		{
-			Connect connect = new Connect(cleanSession, duration, clientID, willPresent);
+			SNConnect connect = new SNConnect(cleanSession, duration, clientID, willPresent);
 			ByteBuf expected = Parser.encode(message);
 			ByteBuf actual = Parser.encode(connect);
 			assertTrue(ByteBufUtil.equals(expected, actual));
-			connect = (Connect) Parser.decode(actual);
+			connect = (SNConnect) Parser.decode(actual);
 			Assertion.assertConnect(message, connect);
 		}
 		catch (Exception e)
@@ -82,7 +82,7 @@ public class ConnectTests
 	@Test(expected = MalformedMessageException.class)
 	public void testEmptyClientID()
 	{
-		Connect connect = new Connect(true, 123, "", true);
+		SNConnect connect = new SNConnect(true, 123, "", true);
 		ByteBuf buf = Parser.encode(connect);
 		Parser.decode(buf);
 	}

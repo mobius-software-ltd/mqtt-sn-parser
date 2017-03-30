@@ -7,13 +7,13 @@ import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 public class Flags
 {
 	private boolean dup;
-	private QoS qos;
+	private SNQoS qos;
 	private boolean retain;
 	private boolean will;
 	private boolean cleanSession;
 	private TopicType topicType;
 
-	public Flags(boolean dup, QoS qos, boolean retain, boolean will, boolean cleanSession, TopicType topicType)
+	public Flags(boolean dup, SNQoS qos, boolean retain, boolean will, boolean cleanSession, TopicType topicType)
 	{
 		this.dup = dup;
 		this.qos = qos;
@@ -23,7 +23,7 @@ public class Flags
 		this.topicType = topicType;
 	}
 
-	public Flags reInit(boolean dup, QoS qos, boolean retain, boolean will, boolean cleanSession, TopicType topicType)
+	public Flags reInit(boolean dup, SNQoS qos, boolean retain, boolean will, boolean cleanSession, TopicType topicType)
 	{
 		this.dup = dup;
 		this.qos = qos;
@@ -55,21 +55,21 @@ public class Flags
 		boolean will = bitMask.contains(Flag.WILL);
 		boolean cleanSession = bitMask.contains(Flag.CLEAN_SESSION);
 
-		QoS qos = null;
+		SNQoS qos = null;
 		if (bitMask.contains(Flag.QOS_LEVEL_ONE))
-			qos = QoS.LEVEL_ONE;
+			qos = SNQoS.LEVEL_ONE;
 		else if (bitMask.contains(Flag.QOS_2))
-			qos = QoS.EXACTLY_ONCE;
+			qos = SNQoS.EXACTLY_ONCE;
 		else if (bitMask.contains(Flag.QOS_1))
-			qos = QoS.AT_LEAST_ONCE;
+			qos = SNQoS.AT_LEAST_ONCE;
 		else
-			qos = QoS.AT_MOST_ONCE;
+			qos = SNQoS.AT_MOST_ONCE;
 
 		TopicType topicType = null;
 		if (bitMask.contains(Flag.SHORT_TOPIC))
 			topicType = TopicType.SHORT;
 		else if (bitMask.contains(Flag.ID_TOPIC))
-			topicType = TopicType.PREDEFINED;
+			topicType = TopicType.ID;
 		else
 			topicType = TopicType.NAMED;
 
@@ -78,7 +78,7 @@ public class Flags
 		case CONNECT:
 			if (dup)
 				throw new MalformedMessageException(type + " invalid encoding: dup flag");
-			if (qos != QoS.AT_MOST_ONCE)
+			if (qos != SNQoS.AT_MOST_ONCE)
 				throw new MalformedMessageException(type + " invalid encoding: qos flag - " + qos.getValue());
 			if (retain)
 				throw new MalformedMessageException(type + " invalid encoding: retain flag");
@@ -140,7 +140,7 @@ public class Flags
 		case UNSUBSCRIBE:
 			if (dup)
 				throw new MalformedMessageException(type + " invalid encoding: dup flag");
-			if (qos != QoS.AT_MOST_ONCE)
+			if (qos != SNQoS.AT_MOST_ONCE)
 				throw new MalformedMessageException(type + " invalid encoding: qos flag");
 			if (retain)
 				throw new MalformedMessageException(type + " invalid encoding: retain flag");
@@ -171,7 +171,7 @@ public class Flags
 		return new Flags(dup, qos, retain, will, cleanSession, topicType);
 	}
 
-	public static byte encode(boolean dup, QoS qos, boolean retain, boolean will, boolean cleanSession, TopicType topicType)
+	public static byte encode(boolean dup, SNQoS qos, boolean retain, boolean will, boolean cleanSession, TopicType topicType)
 	{
 		byte flagsByte = 0;
 		if (dup)
@@ -199,12 +199,12 @@ public class Flags
 		this.dup = dup;
 	}
 
-	public QoS getQos()
+	public SNQoS getQos()
 	{
 		return qos;
 	}
 
-	public void setQos(QoS qos)
+	public void setQos(SNQoS qos)
 	{
 		this.qos = qos;
 	}

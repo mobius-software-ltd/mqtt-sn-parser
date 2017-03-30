@@ -21,37 +21,37 @@ public class Assertion
 				assertAdvertise((Advertise) expected, (Advertise) actual);
 				break;
 			case CONNACK:
-				assertConnack((Connack) expected, (Connack) actual);
+				assertConnack((SNConnack) expected, (SNConnack) actual);
 				break;
 			case CONNECT:
-				assertConnect((Connect) expected, (Connect) actual);
+				assertConnect((SNConnect) expected, (SNConnect) actual);
 				break;
 			case DISCONNECT:
-				assertDisconnect((Disconnect) expected, (Disconnect) actual);
+				assertDisconnect((SNDisconnect) expected, (SNDisconnect) actual);
 				break;
 			case GWINFO:
 				assertGWInfo((GWInfo) expected, (GWInfo) actual);
 				break;
 			case PINGREQ:
-				assertPingreq((Pingreq) expected, (Pingreq) actual);
+				assertPingreq((SNPingreq) expected, (SNPingreq) actual);
 				break;
 			case PINGRESP:
 				assertConstants(expected, actual);
 				break;
 			case PUBACK:
-				assertPuback((Puback) expected, (Puback) actual);
+				assertPuback((SNPuback) expected, (SNPuback) actual);
 				break;
 			case PUBCOMP:
-				assertPubcomp((Pubcomp) expected, (Pubcomp) actual);
+				assertPubcomp((SNPubcomp) expected, (SNPubcomp) actual);
 				break;
 			case PUBLISH:
-				assertPublish((Publish) expected, (Publish) actual);
+				assertPublish((SNPublish) expected, (SNPublish) actual);
 				break;
 			case PUBREC:
-				assertPubrec((Pubrec) expected, (Pubrec) actual);
+				assertPubrec((SNPubrec) expected, (SNPubrec) actual);
 				break;
 			case PUBREL:
-				assertPubrel((Pubrel) expected, (Pubrel) actual);
+				assertPubrel((SNPubrel) expected, (SNPubrel) actual);
 				break;
 			case REGACK:
 				assertRegack((Regack) expected, (Regack) actual);
@@ -63,16 +63,16 @@ public class Assertion
 				assertSearchGw((SearchGW) expected, (SearchGW) actual);
 				break;
 			case SUBACK:
-				assertSuback((Suback) expected, (Suback) actual);
+				assertSuback((SNSuback) expected, (SNSuback) actual);
 				break;
 			case SUBSCRIBE:
-				assertSubscribe((Subscribe) expected, (Subscribe) actual);
+				assertSubscribe((SNSubscribe) expected, (SNSubscribe) actual);
 				break;
 			case UNSUBACK:
-				assertUnsuback((Unsuback) expected, (Unsuback) actual);
+				assertUnsuback((SNUnsuback) expected, (SNUnsuback) actual);
 				break;
 			case UNSUBSCRIBE:
-				assertUnsubscribe((Unsubscribe) expected, (Unsubscribe) actual);
+				assertUnsubscribe((SNUnsubscribe) expected, (SNUnsubscribe) actual);
 				break;
 			case WILL_MSG:
 				assertWillMsg((WillMsg) expected, (WillMsg) actual);
@@ -157,7 +157,7 @@ public class Assertion
 		}
 	}
 
-	public static void assertConnect(Connect expected, Connect actual)
+	public static void assertConnect(SNConnect expected, SNConnect actual)
 	{
 		if (assertConstants(expected, actual))
 		{
@@ -172,7 +172,7 @@ public class Assertion
 		}
 	}
 
-	public static void assertConnack(Connack expected, Connack actual)
+	public static void assertConnack(SNConnack expected, SNConnack actual)
 	{
 		if (assertConstants(expected, actual))
 			assertEquals(expected.getCode(), actual.getCode());
@@ -226,7 +226,7 @@ public class Assertion
 		}
 	}
 
-	public static void assertPublish(Publish expected, Publish actual)
+	public static void assertPublish(SNPublish expected, SNPublish actual)
 	{
 		if (assertConstants(expected, actual))
 		{
@@ -237,7 +237,7 @@ public class Assertion
 		}
 	}
 
-	public static void assertPuback(Puback expected, Puback actual)
+	public static void assertPuback(SNPuback expected, SNPuback actual)
 	{
 		if (assertConstants(expected, actual))
 		{
@@ -247,25 +247,25 @@ public class Assertion
 		}
 	}
 
-	public static void assertPubrec(Pubrec expected, Pubrec actual)
+	public static void assertPubrec(SNPubrec expected, SNPubrec actual)
 	{
 		if (assertConstants(expected, actual))
 			assertEquals(expected.getMessageID(), actual.getMessageID());
 	}
 
-	public static void assertPubrel(Pubrel expected, Pubrel actual)
+	public static void assertPubrel(SNPubrel expected, SNPubrel actual)
 	{
 		if (assertConstants(expected, actual))
 			assertEquals(expected.getMessageID(), actual.getMessageID());
 	}
 
-	public static void assertPubcomp(Pubcomp expected, Pubcomp actual)
+	public static void assertPubcomp(SNPubcomp expected, SNPubcomp actual)
 	{
 		if (assertConstants(expected, actual))
 			assertEquals(expected.getMessageID(), actual.getMessageID());
 	}
 
-	public static void assertSubscribe(Subscribe expected, Subscribe actual)
+	public static void assertSubscribe(SNSubscribe expected, SNSubscribe actual)
 	{
 		if (assertConstants(expected, actual))
 		{
@@ -275,7 +275,7 @@ public class Assertion
 		}
 	}
 
-	public static void assertSuback(Suback expected, Suback actual)
+	public static void assertSuback(SNSuback expected, SNSuback actual)
 	{
 		if (assertConstants(expected, actual))
 		{
@@ -285,7 +285,7 @@ public class Assertion
 		}
 	}
 
-	public static void assertUnsubscribe(Unsubscribe expected, Unsubscribe actual)
+	public static void assertUnsubscribe(SNUnsubscribe expected, SNUnsubscribe actual)
 	{
 		if (assertConstants(expected, actual))
 		{
@@ -294,19 +294,19 @@ public class Assertion
 		}
 	}
 
-	public static void assertUnsuback(Unsuback expected, Unsuback actual)
+	public static void assertUnsuback(SNUnsuback expected, SNUnsuback actual)
 	{
 		if (assertConstants(expected, actual))
 			assertEquals(expected.getMessageID(), actual.getMessageID());
 	}
 
-	public static void assertPingreq(Pingreq expected, Pingreq actual)
+	public static void assertPingreq(SNPingreq expected, SNPingreq actual)
 	{
 		if (assertConstants(expected, actual))
 			assertEquals(expected.getClientID(), actual.getClientID());
 	}
 
-	public static void assertDisconnect(Disconnect expected, Disconnect actual)
+	public static void assertDisconnect(SNDisconnect expected, SNDisconnect actual)
 	{
 		if (assertConstants(expected, actual))
 			assertEquals(expected.getDuration(), actual.getDuration());

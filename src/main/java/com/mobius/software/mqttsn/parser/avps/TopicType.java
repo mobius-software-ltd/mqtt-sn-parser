@@ -7,7 +7,7 @@ import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 
 public enum TopicType
 {
-	NAMED(0), PREDEFINED(1), SHORT(2);
+	NAMED(0), ID(1), SHORT(2);
 
 	private int value;
 
