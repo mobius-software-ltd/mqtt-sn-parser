@@ -123,7 +123,7 @@ public class Parser
 
 			case REGISTER:
 				int registerTopicID = buf.readUnsignedShort();
-				if (!ValuesValidator.validateTopicID(registerTopicID))
+				if (!ValuesValidator.validateRegisterTopicID(registerTopicID))
 					throw new MalformedMessageException(type + " invalid topicID value " + registerTopicID);
 				bytesLeft -= 2;
 				int registerMessageID = buf.readUnsignedShort();
@@ -140,7 +140,7 @@ public class Parser
 
 			case REGACK:
 				int regackTopicID = buf.readUnsignedShort();
-				if (!ValuesValidator.validateTopicID(regackTopicID))
+				if (!ValuesValidator.validateRegisterTopicID(regackTopicID))
 					throw new MalformedMessageException(type + " invalid topicID value " + regackTopicID);
 				int regackMessageID = buf.readUnsignedShort();
 				if (!ValuesValidator.validateMessageID(regackMessageID))
@@ -525,9 +525,12 @@ public class Parser
 
 		case WILL_TOPIC_UPD:
 			WillTopicUpd willTopicUpd = (WillTopicUpd) message;
-			byte willTopicUpdByte = Flags.encode(false, willTopicUpd.getTopic().getQos(), willTopicUpd.isRetain(), false, false, null);
-			buf.writeByte(willTopicUpdByte);
-			buf.writeBytes(willTopicUpd.getTopic().getValue().getBytes());
+			if (willTopicUpd.getTopic() != null)
+			{
+				byte willTopicUpdByte = Flags.encode(false, willTopicUpd.getTopic().getQos(), willTopicUpd.isRetain(), false, false, null);
+				buf.writeByte(willTopicUpdByte);
+				buf.writeBytes(willTopicUpd.getTopic().getValue().getBytes());
+			}
 			break;
 
 		case WILL_MSG_UPD:

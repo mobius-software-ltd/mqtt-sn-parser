@@ -22,6 +22,11 @@ public class ValuesValidator
 	{
 		return topicID > 0 && !RESERVED_TOPIC_IDS.contains(topicID);
 	}
+	
+	public static boolean validateRegisterTopicID(int topicID)
+	{
+		return topicID >= 0 && !RESERVED_TOPIC_IDS.contains(topicID);
+	}
 
 	public static boolean canRead(ByteBuf buf, int bytesLeft)
 	{
