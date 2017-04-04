@@ -123,7 +123,7 @@ public class Parser
 
 			case REGISTER:
 				int registerTopicID = buf.readUnsignedShort();
-				if (!ValuesValidator.validateRegisterTopicID(registerTopicID))
+				if (!ValuesValidator.validateRegistrationTopicID(registerTopicID))
 					throw new MalformedMessageException(type + " invalid topicID value " + registerTopicID);
 				bytesLeft -= 2;
 				int registerMessageID = buf.readUnsignedShort();
@@ -140,7 +140,7 @@ public class Parser
 
 			case REGACK:
 				int regackTopicID = buf.readUnsignedShort();
-				if (!ValuesValidator.validateRegisterTopicID(regackTopicID))
+				if (!ValuesValidator.validateRegistrationTopicID(regackTopicID))
 					throw new MalformedMessageException(type + " invalid topicID value " + regackTopicID);
 				int regackMessageID = buf.readUnsignedShort();
 				if (!ValuesValidator.validateMessageID(regackMessageID))
@@ -241,7 +241,7 @@ public class Parser
 			case SUBACK:
 				Flags subackFlags = Flags.decode(buf.readByte(), type);
 				int subackTopicID = buf.readUnsignedShort();
-				if (!ValuesValidator.validateTopicID(subackTopicID))
+				if (!ValuesValidator.validateRegistrationTopicID(subackTopicID))
 					throw new MalformedMessageException(type + " invalid topicID value " + subackTopicID);
 				int subackMessageID = buf.readUnsignedShort();
 				if (!ValuesValidator.validateMessageID(subackMessageID))
