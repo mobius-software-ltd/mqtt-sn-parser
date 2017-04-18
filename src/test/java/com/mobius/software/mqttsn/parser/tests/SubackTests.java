@@ -12,8 +12,8 @@ import org.junit.Test;
 
 import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.Flag;
-import com.mobius.software.mqttsn.parser.avps.SNQoS;
 import com.mobius.software.mqttsn.parser.avps.ReturnCode;
+import com.mobius.software.mqttsn.parser.avps.SNQoS;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 import com.mobius.software.mqttsn.parser.packet.impl.SNSuback;
@@ -105,22 +105,6 @@ public class SubackTests
 	public void testInvalidMessageID()
 	{
 		SNSuback suback = new SNSuback(TOPIC_ID, 0, CODE, QOS);
-		ByteBuf buf = Parser.encode(suback);
-		Parser.decode(buf);
-	}
-
-	@Test(expected = MalformedMessageException.class)
-	public void testInvalidTopicIDZero()
-	{
-		SNSuback suback = new SNSuback(0x0000, MESSAGE_ID, CODE, QOS);
-		ByteBuf buf = Parser.encode(suback);
-		Parser.decode(buf);
-	}
-
-	@Test(expected = MalformedMessageException.class)
-	public void testInvalidTopicID65535()
-	{
-		SNSuback suback = new SNSuback(0xFFFF, MESSAGE_ID, CODE, QOS);
 		ByteBuf buf = Parser.encode(suback);
 		Parser.decode(buf);
 	}

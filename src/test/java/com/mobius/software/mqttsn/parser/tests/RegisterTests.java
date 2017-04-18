@@ -3,6 +3,9 @@ package com.mobius.software.mqttsn.parser.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.Unpooled;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,10 +15,6 @@ import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 import com.mobius.software.mqttsn.parser.packet.impl.Register;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
-
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
-import io.netty.buffer.Unpooled;
 
 public class RegisterTests
 {
@@ -102,22 +101,6 @@ public class RegisterTests
 	public void testInvalidMessageID()
 	{
 		Register register = new Register(TOPIC_ID, 0, TOPIC_NAME);
-		ByteBuf buf = Parser.encode(register);
-		Parser.decode(buf);
-	}
-
-	@Test(expected = MalformedMessageException.class)
-	public void testInvalidTopicIDZero()
-	{
-		Register register = new Register(0x0000, MESSAGE_ID, TOPIC_NAME);
-		ByteBuf buf = Parser.encode(register);
-		Parser.decode(buf);
-	}
-	
-	@Test(expected = MalformedMessageException.class)
-	public void testInvalidTopicID65535()
-	{
-		Register register = new Register(0xFFFF, MESSAGE_ID, TOPIC_NAME);
 		ByteBuf buf = Parser.encode(register);
 		Parser.decode(buf);
 	}

@@ -112,6 +112,8 @@ public class Flags
 		case SUBSCRIBE:
 			if (qos == null)
 				throw new MalformedMessageException(type + " invalid encoding: qos flag");
+			if (qos == SNQoS.LEVEL_ONE)
+				throw new MalformedMessageException(type + "invalid encoding: qos " + qos);
 			if (retain)
 				throw new MalformedMessageException(type + " invalid encoding: retain flag");
 			if (will)

@@ -158,10 +158,8 @@ public class Parser
 				bytesLeft -= 2;
 				if (publishFlags.getQos() != SNQoS.AT_MOST_ONCE && publishMessageID == 0)
 					throw new MalformedMessageException("invalid PUBLISH QoS-0 messageID:" + publishMessageID);
-				if (!ValuesValidator.canRead(buf, bytesLeft))
-					throw new MalformedMessageException(type + " content must not be empty");
-				ByteBuf publishContent = Unpooled.buffer(bytesLeft);
-				buf.readBytes(publishContent);
+				/*if (!ValuesValidator.canRead(buf, bytesLeft))
+					throw new MalformedMessageException(type + " content must not be empty");*/
 				SNTopic publishTopic = null;
 				if (publishFlags.getTopicType() == TopicType.SHORT)
 					publishTopic = new ShortTopic(String.valueOf(publishTopicID), publishFlags.getQos());
@@ -170,6 +168,16 @@ public class Parser
 					if (!ValuesValidator.validateTopicID(publishTopicID))
 						throw new MalformedMessageException(type + " invalid topicID value " + publishTopicID);
 					publishTopic = new IdentifierTopic(publishTopicID, publishFlags.getQos());
+				}
+				ByteBuf publishContent = null;
+				if (bytesLeft > 0)
+				{
+					publishContent = Unpooled.buffer(bytesLeft);
+					buf.readBytes(publishContent);
+				}
+				else
+				{
+					publishContent = Unpooled.EMPTY_BUFFER;
 				}
 				message = new SNPublish(publishMessageID, publishTopic, publishContent, publishFlags.isDup(), publishFlags.isRetain());
 				break;

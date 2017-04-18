@@ -107,22 +107,6 @@ public class RegackTests
 	}
 
 	@Test(expected = MalformedMessageException.class)
-	public void testInvalidTopicIDZero()
-	{
-		Regack Regack = new Regack(0x0000, MESSAGE_ID, CODE);
-		ByteBuf buf = Parser.encode(Regack);
-		Parser.decode(buf);
-	}
-
-	@Test(expected = MalformedMessageException.class)
-	public void testInvalidTopicID65535()
-	{
-		Regack Regack = new Regack(0xFFFF, MESSAGE_ID, CODE);
-		ByteBuf buf = Parser.encode(Regack);
-		Parser.decode(buf);
-	}
-
-	@Test(expected = MalformedMessageException.class)
 	public void testInvalidCode()
 	{
 		byte[] invalidLengthArray =
