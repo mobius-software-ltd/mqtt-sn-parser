@@ -107,6 +107,8 @@ public class Flags
 				throw new MalformedMessageException(type + " invalid encoding: will flag");
 			if (cleanSession)
 				throw new MalformedMessageException(type + " invalid encoding: cleanSession flag");
+			if (dup && (qos == SNQoS.AT_MOST_ONCE || qos == SNQoS.LEVEL_ONE))
+				throw new MalformedMessageException(type + " invalid encoding: dup flag with invalid qos:" + qos);
 			break;
 
 		case SUBSCRIBE:

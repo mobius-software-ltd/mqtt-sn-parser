@@ -158,8 +158,6 @@ public class Parser
 				bytesLeft -= 2;
 				if (publishFlags.getQos() != SNQoS.AT_MOST_ONCE && publishMessageID == 0)
 					throw new MalformedMessageException("invalid PUBLISH QoS-0 messageID:" + publishMessageID);
-				/*if (!ValuesValidator.canRead(buf, bytesLeft))
-					throw new MalformedMessageException(type + " content must not be empty");*/
 				SNTopic publishTopic = null;
 				if (publishFlags.getTopicType() == TopicType.SHORT)
 					publishTopic = new ShortTopic(String.valueOf(publishTopicID), publishFlags.getQos());
