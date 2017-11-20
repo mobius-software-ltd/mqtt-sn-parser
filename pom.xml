@@ -3,10 +3,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mobius-software.mqttsn</groupId>
 	<artifactId>mqtt-sn-parser</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>parser</name>
 	<description>Parser for MQTT-SN</description>
 
+	<scm>
+		<url>https://github.com/mobius-software-ltd/mqtt-parser</url>
+		<connection>scm:git:git://github.com:mobius-software-ltd/mqtt-parser.git</connection>
+		<developerConnection>scm:git:git@github.com:mobius-software-ltd/mqtt-parser.git</developerConnection>
+	</scm>
+	
 	<dependencies>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -58,4 +64,18 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<distributionManagement>
+		<repository>
+			<id>mobius-public-releases-repository</id>
+			<name>Mobius Public Releases Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<snapshotRepository>
+			<id>mobius-publis-snapshots-repository</id>
+			<name>Mobius Public Snapshots Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
 </project>
