@@ -9,7 +9,7 @@
 
 	<groupId>com.mobius-software.mqttsn</groupId>
 	<artifactId>mqtt-sn-parser</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<packaging>jar</packaging>
 
@@ -20,7 +20,7 @@
 		<url>https://github.com/mobius-software-ltd/mqtt-sn-parser</url>
 		<connection>scm:git:git://github.com:mobius-software-ltd/mqtt-sn-parser.git</connection>
 		<developerConnection>scm:git:git@github.com:mobius-software-ltd/mqtt-sn-parser.git</developerConnection>
-	  <tag>mqtt-sn-parser-1.0.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<dependencies>
