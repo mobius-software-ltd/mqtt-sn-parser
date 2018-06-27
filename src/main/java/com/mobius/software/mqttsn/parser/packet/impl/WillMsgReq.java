@@ -3,7 +3,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class WillMsgReq implements SNMessage
+public class WillMsgReq extends SNMessage
 {
 	@Override
 	public int getLength()

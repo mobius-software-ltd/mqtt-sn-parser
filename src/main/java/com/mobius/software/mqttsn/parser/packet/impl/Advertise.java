@@ -3,7 +3,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class Advertise implements SNMessage
+public class Advertise extends SNMessage
 {
 	private int gwID;
 	private int duration;

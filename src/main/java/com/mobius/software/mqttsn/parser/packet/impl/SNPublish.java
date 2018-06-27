@@ -1,12 +1,12 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
-import io.netty.buffer.ByteBuf;
-
 import com.mobius.software.mqttsn.parser.avps.SNTopic;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class SNPublish implements SNMessage
+import io.netty.buffer.ByteBuf;
+
+public class SNPublish extends SNMessage
 {
 	private Integer messageID;
 	private SNTopic topic;

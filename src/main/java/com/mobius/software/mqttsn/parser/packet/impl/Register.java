@@ -4,7 +4,7 @@ import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class Register implements SNMessage
+public class Register extends SNMessage
 {
 	private int topicID;
 	private int messageID;

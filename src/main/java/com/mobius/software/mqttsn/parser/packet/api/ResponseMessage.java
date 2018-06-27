@@ -2,7 +2,7 @@ package com.mobius.software.mqttsn.parser.packet.api;
 
 import com.mobius.software.mqttsn.parser.avps.ReturnCode;
 
-public abstract class ResponseMessage implements SNMessage
+public abstract class ResponseMessage extends SNMessage
 {
 	private ReturnCode code;
 

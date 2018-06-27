@@ -1,10 +1,10 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
-import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.avps.SNTopic;
+import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class SNUnsubscribe implements SNMessage
+public class SNUnsubscribe extends SNMessage
 {
 	private int messageID;
 	private SNTopic topic;

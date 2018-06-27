@@ -1,6 +1,6 @@
 package com.mobius.software.mqttsn.parser.packet.api;
 
-public abstract class CountableMessage implements SNMessage
+public abstract class CountableMessage extends SNMessage
 {
 	private int messageID;
 

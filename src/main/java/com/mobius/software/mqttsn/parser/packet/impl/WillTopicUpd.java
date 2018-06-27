@@ -4,7 +4,7 @@ import com.mobius.software.mqttsn.parser.avps.FullTopic;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class WillTopicUpd implements SNMessage
+public class WillTopicUpd extends SNMessage
 {
 	private boolean retain;
 	private FullTopic topic;

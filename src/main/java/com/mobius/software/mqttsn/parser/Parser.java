@@ -1,8 +1,5 @@
 package com.mobius.software.mqttsn.parser;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 
@@ -13,6 +10,9 @@ import com.mobius.software.mqttsn.parser.packet.api.ResponseMessage;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 import com.mobius.software.mqttsn.parser.packet.impl.*;
 import com.mobius.software.mqttsn.parser.util.ValuesValidator;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 public class Parser
 {
@@ -560,8 +560,8 @@ public class Parser
 			break;
 		}
 
-		if (type != SNType.ENCAPSULATED && message.getLength() != buf.readableBytes())
-			throw new MalformedMessageException("invalid message encoding: expected length-" + message.getLength() + ",actual-" + buf.readableBytes());
+		if (type != SNType.ENCAPSULATED && length != buf.readableBytes())
+			throw new MalformedMessageException("invalid message encoding: expected length-" + length + ",actual-" + buf.readableBytes());
 
 		return buf;
 	}

@@ -4,7 +4,7 @@ import com.mobius.software.mqttsn.parser.avps.Radius;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class Encapsulated implements SNMessage
+public class Encapsulated extends SNMessage
 {
 	private Radius radius;
 	private String wirelessNodeID;

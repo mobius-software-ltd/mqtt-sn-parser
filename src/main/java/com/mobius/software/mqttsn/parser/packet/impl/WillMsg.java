@@ -1,11 +1,11 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
-import io.netty.buffer.ByteBuf;
-
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class WillMsg implements SNMessage
+import io.netty.buffer.ByteBuf;
+
+public class WillMsg extends SNMessage
 {
 	private ByteBuf content;
 

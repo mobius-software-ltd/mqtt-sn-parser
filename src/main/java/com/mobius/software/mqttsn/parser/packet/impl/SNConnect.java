@@ -4,7 +4,7 @@ import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class SNConnect implements SNMessage
+public class SNConnect extends SNMessage
 {
 	public static final int MQTT_SN_PROTOCOL_ID = 1;
 
