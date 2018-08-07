@@ -1,6 +1,8 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
+import com.mobius.software.mqttsn.parser.avps.Radius;
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 public class SearchGW extends SNMessage
@@ -43,5 +45,11 @@ public class SearchGW extends SNMessage
 	public void setRadius(int radius)
 	{
 		this.radius = radius;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processSearchGw(Radius.valueOf(radius));
 	}
 }

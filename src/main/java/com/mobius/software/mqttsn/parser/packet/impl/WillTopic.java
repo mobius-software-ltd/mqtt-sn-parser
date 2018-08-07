@@ -2,6 +2,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.FullTopic;
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 public class WillTopic extends SNMessage
@@ -64,5 +65,11 @@ public class WillTopic extends SNMessage
 	public void setTopic(FullTopic topic)
 	{
 		this.topic = topic;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processWillTopic(topic);
 	}
 }

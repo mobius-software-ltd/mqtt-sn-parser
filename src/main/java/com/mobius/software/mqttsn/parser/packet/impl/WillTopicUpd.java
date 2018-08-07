@@ -2,6 +2,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.FullTopic;
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 public class WillTopicUpd extends SNMessage
@@ -64,5 +65,11 @@ public class WillTopicUpd extends SNMessage
 	public void setRetain(boolean retain)
 	{
 		this.retain = retain;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processWillTopicUpdate(topic);
 	}
 }

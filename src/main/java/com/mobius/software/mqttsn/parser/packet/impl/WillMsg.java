@@ -1,6 +1,7 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 import io.netty.buffer.ByteBuf;
@@ -49,5 +50,11 @@ public class WillMsg extends SNMessage
 	public void setContent(ByteBuf content)
 	{
 		this.content = content;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processWillMessage(content);
 	}
 }

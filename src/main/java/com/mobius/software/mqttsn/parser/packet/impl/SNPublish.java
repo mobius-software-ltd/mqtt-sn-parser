@@ -2,6 +2,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNTopic;
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 import io.netty.buffer.ByteBuf;
@@ -102,5 +103,11 @@ public class SNPublish extends SNMessage
 	public void setRetain(boolean retain)
 	{
 		this.retain = retain;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processPublish(messageID, topic, content, retain, dup);
 	}
 }

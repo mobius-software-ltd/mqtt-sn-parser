@@ -2,6 +2,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNTopic;
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 public class SNUnsubscribe extends SNMessage
@@ -61,5 +62,11 @@ public class SNUnsubscribe extends SNMessage
 	public void setTopic(SNTopic topic)
 	{
 		this.topic = topic;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processUnsubscribe(messageID, topic);
 	}
 }

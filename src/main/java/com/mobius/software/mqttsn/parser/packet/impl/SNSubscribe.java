@@ -2,6 +2,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNTopic;
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 public class SNSubscribe extends SNMessage
@@ -74,5 +75,11 @@ public class SNSubscribe extends SNMessage
 	public void setDup(boolean dup)
 	{
 		this.dup = dup;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processSubscribe(messageID, topic);
 	}
 }

@@ -3,9 +3,6 @@ package com.mobius.software.mqttsn.parser.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
-import io.netty.buffer.Unpooled;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,11 +11,15 @@ import com.mobius.software.mqttsn.parser.Parser;
 import com.mobius.software.mqttsn.parser.avps.Flag;
 import com.mobius.software.mqttsn.parser.avps.IdentifierTopic;
 import com.mobius.software.mqttsn.parser.avps.SNQoS;
-import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.avps.SNTopic;
+import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
 import com.mobius.software.mqttsn.parser.packet.impl.SNPublish;
 import com.mobius.software.mqttsn.parser.tests.util.Assertion;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.buffer.Unpooled;
 
 public class PublishTests
 {
@@ -174,14 +175,6 @@ public class PublishTests
 		SNTopic topic = new IdentifierTopic(65535, SNQoS.AT_MOST_ONCE);
 		SNPublish Publish = new SNPublish(MESSAGE_ID, topic, loadContent(), DUP, RETAIN);
 		ByteBuf buf = Parser.encode(Publish);
-		Parser.decode(buf);
-	}
-
-	@Test(expected = MalformedMessageException.class)
-	public void testInvalidEmptyContent()
-	{
-		SNPublish publish = new SNPublish(MESSAGE_ID, TOPIC, Unpooled.EMPTY_BUFFER, DUP, RETAIN);
-		ByteBuf buf = Parser.encode(publish);
 		Parser.decode(buf);
 	}
 

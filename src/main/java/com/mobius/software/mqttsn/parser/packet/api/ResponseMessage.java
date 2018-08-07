@@ -4,7 +4,7 @@ import com.mobius.software.mqttsn.parser.avps.ReturnCode;
 
 public abstract class ResponseMessage extends SNMessage
 {
-	private ReturnCode code;
+	protected ReturnCode code;
 
 	public ResponseMessage()
 	{

@@ -2,6 +2,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.CountableMessage;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 
 public class SNPubcomp extends CountableMessage
 {
@@ -25,5 +26,11 @@ public class SNPubcomp extends CountableMessage
 	public SNType getType()
 	{
 		return SNType.PUBCOMP;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processPubcomp(messageID);
 	}
 }

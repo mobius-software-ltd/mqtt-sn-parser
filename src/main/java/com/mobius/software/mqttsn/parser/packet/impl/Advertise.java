@@ -1,6 +1,7 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 public class Advertise extends SNMessage
@@ -56,5 +57,11 @@ public class Advertise extends SNMessage
 	public void setDuration(int duration)
 	{
 		this.duration = duration;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processAdvertise(gwID, duration);
 	}
 }

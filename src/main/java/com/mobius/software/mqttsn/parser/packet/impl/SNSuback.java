@@ -1,9 +1,10 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
-import com.mobius.software.mqttsn.parser.avps.SNQoS;
 import com.mobius.software.mqttsn.parser.avps.ReturnCode;
+import com.mobius.software.mqttsn.parser.avps.SNQoS;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.CountableMessage;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 
 public class SNSuback extends CountableMessage
 {
@@ -73,5 +74,11 @@ public class SNSuback extends CountableMessage
 	public void setAllowedQos(SNQoS allowedQos)
 	{
 		this.allowedQos = allowedQos;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processSuback(messageID, topicID, code, allowedQos);
 	}
 }

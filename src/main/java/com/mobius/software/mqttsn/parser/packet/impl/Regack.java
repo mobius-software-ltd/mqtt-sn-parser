@@ -3,6 +3,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 import com.mobius.software.mqttsn.parser.avps.ReturnCode;
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.packet.api.CountableMessage;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 
 public class Regack extends CountableMessage
 {
@@ -59,5 +60,11 @@ public class Regack extends CountableMessage
 	public void setCode(ReturnCode code)
 	{
 		this.code = code;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processRegack(messageID, topicID, code);
 	}
 }

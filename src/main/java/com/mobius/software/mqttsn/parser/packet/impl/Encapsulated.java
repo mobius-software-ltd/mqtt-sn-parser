@@ -2,6 +2,7 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.Radius;
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 public class Encapsulated extends SNMessage
@@ -73,5 +74,11 @@ public class Encapsulated extends SNMessage
 	public void setMessage(SNMessage message)
 	{
 		this.message = message;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		message.processBy(device);
 	}
 }

@@ -11,6 +11,8 @@ public abstract class SNMessage
 
 	public abstract SNType getType();
 
+	public abstract void processBy(SNDevice device);
+	
 	public static Builder builder()
 	{
 		return new Builder();

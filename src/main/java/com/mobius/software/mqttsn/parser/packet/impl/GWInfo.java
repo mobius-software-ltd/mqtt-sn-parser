@@ -1,6 +1,7 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 public class GWInfo extends SNMessage
@@ -59,5 +60,11 @@ public class GWInfo extends SNMessage
 	public void setGwAddress(String gwAddress)
 	{
 		this.gwAddress = gwAddress;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processGwInfo(gwID, gwAddress);
 	}
 }

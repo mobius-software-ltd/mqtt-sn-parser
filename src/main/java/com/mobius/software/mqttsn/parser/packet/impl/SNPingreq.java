@@ -1,6 +1,7 @@
 package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
 import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
 public class SNPingreq extends SNMessage
@@ -46,5 +47,11 @@ public class SNPingreq extends SNMessage
 	public void setClientID(String clientID)
 	{
 		this.clientID = clientID;
+	}
+
+	@Override
+	public void processBy(SNDevice device)
+	{
+		device.processPingreq();
 	}
 }
