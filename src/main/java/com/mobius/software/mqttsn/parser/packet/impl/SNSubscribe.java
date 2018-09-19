@@ -2,12 +2,11 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNTopic;
 import com.mobius.software.mqttsn.parser.avps.SNType;
+import com.mobius.software.mqttsn.parser.packet.api.CountableMessage;
 import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
-import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class SNSubscribe extends SNMessage
+public class SNSubscribe extends CountableMessage
 {
-	private int messageID;
 	private SNTopic topic;
 	private boolean dup;
 
@@ -18,7 +17,7 @@ public class SNSubscribe extends SNMessage
 
 	public SNSubscribe(int messageID, SNTopic topic, boolean dup)
 	{
-		this.messageID = messageID;
+		super(messageID);
 		this.topic = topic;
 		this.dup = dup;
 	}
@@ -45,16 +44,6 @@ public class SNSubscribe extends SNMessage
 	public SNType getType()
 	{
 		return SNType.SUBSCRIBE;
-	}
-
-	public int getMessageID()
-	{
-		return messageID;
-	}
-
-	public void setMessageID(int messageID)
-	{
-		this.messageID = messageID;
 	}
 
 	public SNTopic getTopic()

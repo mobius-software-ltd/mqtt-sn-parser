@@ -2,13 +2,12 @@ package com.mobius.software.mqttsn.parser.packet.impl;
 
 import com.mobius.software.mqttsn.parser.avps.SNType;
 import com.mobius.software.mqttsn.parser.exceptions.MalformedMessageException;
+import com.mobius.software.mqttsn.parser.packet.api.CountableMessage;
 import com.mobius.software.mqttsn.parser.packet.api.SNDevice;
-import com.mobius.software.mqttsn.parser.packet.api.SNMessage;
 
-public class Register extends SNMessage
+public class Register extends CountableMessage
 {
 	private int topicID;
-	private int messageID;
 	private String topicName;
 
 	public Register()
@@ -18,8 +17,8 @@ public class Register extends SNMessage
 
 	public Register(int topicID, int messageID, String topicName)
 	{
+		super(messageID);
 		this.topicID = topicID;
-		this.messageID = messageID;
 		this.topicName = topicName;
 	}
 
@@ -57,16 +56,6 @@ public class Register extends SNMessage
 	public void setTopicID(int topicID)
 	{
 		this.topicID = topicID;
-	}
-
-	public int getMessageID()
-	{
-		return messageID;
-	}
-
-	public void setMessageID(int messageID)
-	{
-		this.messageID = messageID;
 	}
 
 	public String getTopicName()
