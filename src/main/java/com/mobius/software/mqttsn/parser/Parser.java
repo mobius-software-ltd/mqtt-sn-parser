@@ -16,6 +16,8 @@ import io.netty.buffer.Unpooled;
 
 public class Parser
 {
+	private static final int DEFAULT_MAX_MESSAGE_SIZE = 65536;
+	
 	private static final String ENCODING = "UTF-8";
 	private static final byte THREE_OCTET_LENGTH_SUFFIX = 0x01;
 
@@ -26,11 +28,18 @@ public class Parser
 
 	public static SNMessage decode(ByteBuf buf)
 	{
+		return decode(buf, DEFAULT_MAX_MESSAGE_SIZE);
+	}
+	
+	public static SNMessage decode(ByteBuf buf, int maxMessageSize) 
+	{
 		SNMessage message = null;
 		try
 		{
 			int currIndex = buf.readerIndex();
 			int messageLength = decodeContentLength(buf);
+			if(messageLength > maxMessageSize)
+				throw new MalformedMessageException("message length exceeds limit:" + maxMessageSize + ", encoded length=" + messageLength);
 			int bytesLeft = messageLength - (buf.readerIndex() - currIndex);
 
 			short typeByte = buf.readUnsignedByte();
@@ -373,7 +382,7 @@ public class Parser
 
 		return message;
 	}
-
+	
 	private static int decodeContentLength(ByteBuf buf)
 	{
 		int length = 0;
