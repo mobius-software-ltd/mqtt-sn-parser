@@ -1,6 +1,6 @@
 # MQTT-SN parser
 
-MQTT-SN parser is a library designed for encoding and decoding of MQTT-SN 1.2 packets. It is written in Java. MQTT-SN parser is developed by [Mobius Software](http://mobius-software.com).
+MQTT-SN parser is a library designed for encoding and decoding of MQTT-SN 1.2 packets. It is written in Java. MQTT-SN parser is developed by [Mobius Software](https://www.mobius-software.com/).
 
 ## Getting Started
 
